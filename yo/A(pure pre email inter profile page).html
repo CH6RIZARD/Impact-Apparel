@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Point</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            /* 🔧 FIX: use your local camo image as the main background */
+            background: url("sub folderconversion/camo 16X9.webp") center/cover no-repeat fixed;
+
+            position: relative;
+            overflow: hidden;
+        }
+                 
+        /* optional dark overlay on top of camo */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        /* // BACK BUTTON */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+            display: block;
+        }
+
+        .back-button img {
+            width: 220px;   /* adjust if you want bigger/smaller */
+            height: auto;
+            filter: drop-shadow(0 0 8px rgba(0,0,0,0.9));
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .back-button:hover img {
+            transform: scale(1.04);
+            opacity: 0.9;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .login-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .title {
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-weight: bold;
+        }
+
+        .callout {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.85);
+            text-align: center;
+            max-width: 280px;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Rebel option - diagonal parallelogram */
+        .rebel-input {
+            width: 280px;
+            padding: 18px 25px;
+            background: rgba(160, 160, 160, 0.95);
+            border: none;
+            outline: none;
+            color: #1a1a1a;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transform: skewX(-12deg);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .rebel-input::placeholder {
+            color: rgba(26, 26, 26, 0.6);
+            text-transform: lowercase;
+        }
+
+        .rebel-input:focus {
+            background: rgba(180, 180, 180, 0.98);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 6px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .rebel-btn {
+            padding: 12px 35px;
+            background: rgba(100, 100, 100, 0.95);
+            border: 2px solid #d0d0d0;
+            color: #f0f0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transform: skewX(-12deg);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .rebel-btn:hover {
+            background: rgba(140, 140, 140, 0.98);
+            color: #fff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Passcode option - hexagonal shape */
+        .passcode-wrapper {
+            position: relative;
+        }
+
+        .passcode-input {
+            width: 240px;
+            padding: 18px 25px;
+            background: rgba(160, 160, 160, 0.95);
+            border: none;
+            outline: none;
+            color: #1a1a1a;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-align: center;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .passcode-input::placeholder {
+            color: rgba(26, 26, 26, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .passcode-input:focus {
+            background: rgba(180, 180, 180, 0.98);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 6px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .passcode-btn {
+            padding: 12px 35px;
+            background: rgba(100, 100, 100, 0.95);
+            border: 2px solid #d0d0d0;
+            color: #f0f0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .passcode-btn:hover {
+            background: rgba(140, 140, 140, 0.98);
+            color: #fff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .divider {
+            width: 2px;
+            height: 180px;
+            background: linear-gradient(to bottom, 
+                transparent, 
+                rgba(255, 255, 255, 0.3) 20%, 
+                rgba(255, 255, 255, 0.3) 80%, 
+                transparent
+            );
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .divider {
+                width: 180px;
+                height: 2px;
+                background: linear-gradient(to right, 
+                    transparent, 
+                    rgba(255, 255, 255, 0.3) 20%, 
+                    rgba(255, 255, 255, 0.3) 80%, 
+                    transparent
+                );
+            }
+
+            .back-button img {
+                width: 180px; /* slightly smaller on mobile */
+            }
+        }
+    </style>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17632251744"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-17632251744');
+</script>
+
+</head>
+<!-- Event snippet for Purchase conversion page -->
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-17632251744/z5xaCKDR7qgbEOCe29dB',
+      'value': 1.0,
+      'currency': 'USD'
+  });
+</script>
+
+<body>
+
+    <!-- // BACK BUTTON (ROUTED TO aindex (10).html) -->
+    <!-- ⚠️ Change src to match your actual file name, e.g. "Impact logo fst itt (2).png" -->
+    <a href="index.html" class="back-button">
+        <img src="menu and buttons/impact logo fst itt (2).png" alt="Back to Impact Home">
+    </a>
+
+    <div class="container">
+        <!-- Rebel Option -->
+        <div class="login-option">
+            <div class="title">Be A Rebel</div>
+            <div class="callout">get deals and info on new steeze</div>
+                    <form name="colossal-intel" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" style="display:flex; flex-direction:column; gap:20px; align-items:center;">
+<input type="hidden" name="form-name" value="colossal-intel">
+<input type="hidden" name="source" value="profile">
+
+        <p style="display:none">
+            <label>Don't fill this out: <input name="bot-field"></label>
+        </p>
+
+        <input type="email" name="email" class="rebel-input" placeholder="enter email" required>
+
+        <button type="submit" class="rebel-btn">infiltrate</button>
+
+</form>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Passcode Option -->
+        <div class="login-option">
+            <div class="title">Join With Passcode</div>
+            <input type="text" class="passcode-input" placeholder="****" maxlength="6" />
+            <button class="passcode-btn">SLIDE</button>
+        </div>
+    </div>
+
+    <script>
+        // Add enter key functionality
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const button = input.parentElement.querySelector('button');
+                    button.click();
+                }
+            });
+        });
+
+        // Button click handlers
+        document.querySelector('.rebel-btn').addEventListener('click', () => {
+            const email = document.querySelector('.rebel-input').value;
+            if (email) {
+                console.log('Rebel access requested:', email);
+                // Add your login logic here
+            }
+        });
+
+        document.querySelector('.passcode-btn').addEventListener('click', () => {
+            const code = document.querySelector('.passcode-input').value;
+            if (code) {
+                console.log('Passcode entered:', code);
+                // Add your verification logic here
+            }
+        });
+    </script>
+</body>
+</html>

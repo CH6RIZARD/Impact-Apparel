@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMPACT — Limited Drop</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#000;font-family:'Inter',sans-serif;color:#fff}
+
+.logo-header{text-align:center;padding:20px 15px;background:#000}
+.logo-header img{height:45px}
+
+.urgency-bar{
+background:linear-gradient(90deg,#1a1a1a,#111);
+border-top:1px solid #C4A57B;
+border-bottom:1px solid #C4A57B;
+text-align:center;
+padding:12px;
+font-size:11px;
+letter-spacing:2px
+}
+.urgency-bar span{color:#C4A57B}
+
+.products-section{background:#0a0a0a;padding:30px 15px 40px}
+.section-title{text-align:center;margin-bottom:25px}
+.section-title h2{font-family:'Bebas Neue';font-size:26px;letter-spacing:5px}
+.section-hint{font-size:11px;color:#888;margin-top:8px}
+
+.product-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+max-width:800px;
+margin:0 auto
+}
+
+.product-card{
+background:#111;
+border:1px solid #222;
+border-radius:8px;
+overflow:hidden;
+cursor:pointer;
+transition:.25s
+}
+.product-card:hover{
+border-color:#C4A57B;
+transform:translateY(-4px);
+box-shadow:0 10px 30px rgba(196,165,123,.15)
+}
+.product-img-wrap{position:relative;aspect-ratio:1;overflow:hidden}
+.product-img{width:100%;height:100%;object-fit:cover;transition:.3s}
+.product-card:hover .product-img{transform:scale(1.05)}
+.product-badge{position:absolute;top:8px;left:8px;background:#C4A57B;color:#000;font-size:10px;font-weight:700;padding:5px 10px;border-radius:3px}
+.product-info{text-align:center;padding:15px 10px}
+.product-title{font-family:'Bebas Neue';font-size:18px;letter-spacing:1px;line-height:1.2;margin-bottom:6px}
+.product-price{color:#C4A57B;font-weight:700;font-size:18px}
+.tap-hint{font-size:12px;color:#4ade80;margin-top:8px;animation:pulse 1.5s ease infinite;font-weight:600}
+.product-stock{font-size:11px;color:#e74c3c;margin-top:5px;font-weight:500}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+.hero{position:relative;width:100%;overflow:hidden;background:#f5f5f5}
+.hero-img{width:100%;height:auto;display:block}
+
+.hero-map{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+z-index:10
+}
+.hero-map .hit{
+fill:rgba(0,0,0,0);
+stroke:rgba(196,165,123,0);
+stroke-width:6;
+cursor:pointer;
+transition:.25s
+}
+.hero-map .hit:hover{
+fill:rgba(196,165,123,.15);
+stroke:rgba(196,165,123,.9);
+filter:drop-shadow(0 0 20px rgba(196,165,123,.45))
+}
+
+.hero-hint{
+position:absolute;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,.85);
+padding:10px 20px;
+border-radius:30px;
+font-size:12px;
+z-index:20;
+animation:bounce 2s ease infinite
+}
+
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
+
+.modal-overlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.95);
+z-index:1000;
+align-items:center;
+justify-content:center;
+padding:15px
+}
+.modal-overlay.active{display:flex}
+.modal{
+background:#111;
+border:1px solid #333;
+border-radius:12px;
+max-width:420px;
+width:100%;
+max-height:95vh;
+overflow-y:auto;
+position:relative
+}
+.modal-close{
+position:absolute;
+top:10px;right:15px;
+background:rgba(0,0,0,.7);
+border:none;
+color:#fff;
+font-size:24px;
+cursor:pointer;
+z-index:20;
+width:36px;height:36px;
+border-radius:50%
+}
+
+.modal-gallery{position:relative;width:100%;aspect-ratio:1;overflow:hidden;touch-action:pan-y}
+.gallery-track{display:flex;width:100%;height:100%;transition:transform .3s ease}
+.gallery-slide{min-width:100%;height:100%}
+.gallery-slide img{width:100%;height:100%;object-fit:cover}
+.gallery-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10}
+.gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:.2s}
+.gallery-dot.active{background:#C4A57B;transform:scale(1.2)}
+.swipe-hint-modal{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.6);z-index:10}
+
+.modal-content{padding:20px}
+.modal-title{font-family:'Bebas Neue';font-size:28px;letter-spacing:3px;margin-bottom:5px}
+.modal-sub{font-size:12px;color:#666;margin-bottom:15px}
+.modal-price{font-size:24px;color:#C4A57B;font-weight:700;margin-bottom:15px}
+.modal-price .og{text-decoration:line-through;color:#555;font-size:16px;margin-right:8px}
+.modal-savings{text-align:center;background:#1a2e1a;color:#4ade80;padding:8px;font-size:11px;letter-spacing:1px;margin-bottom:15px;border-radius:4px}
+
+.size-label{font-size:11px;color:#888;letter-spacing:1px;margin-bottom:8px;display:block}
+.size-buttons{display:flex;gap:8px;margin-bottom:15px}
+.size-btn{
+flex:1;
+padding:12px;
+background:#1a1a1a;
+border:2px solid #333;
+color:#fff;
+font-family:'Inter';
+font-size:13px;
+font-weight:600;
+cursor:pointer;
+border-radius:6px;
+transition:.2s
+}
+.size-btn:hover{border-color:#C4A57B}
+.size-btn.selected{background:#C4A57B;border-color:#C4A57B;color:#000}
+
+.buy-btn{
+width:100%;
+padding:16px;
+background:#C4A57B;
+border:none;
+color:#000;
+font-family:'Bebas Neue';
+font-size:18px;
+letter-spacing:3px;
+cursor:pointer;
+border-radius:6px;
+transition:.2s;
+margin-bottom:10px;
+animation:btnPulse 2s ease infinite
+}
+.buy-btn:hover{background:#fff;transform:scale(1.02)}
+.buy-btn:disabled{background:#333;color:#666;cursor:not-allowed;animation:none}
+
+@keyframes btnPulse{0%,100%{box-shadow:0 0 0 0 rgba(196,165,123,.7)}50%{box-shadow:0 0 20px 5px rgba(196,165,123,.4)}}
+
+.stock-warning{text-align:center;font-size:11px;color:#e74c3c;letter-spacing:1px;animation:blink 1s ease infinite}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+
+.footer{text-align:center;padding:12px;background:#000}
+.footer p{font-size:10px;color:#666;letter-spacing:2px}
+
+@media(max-width:500px){
+.logo-header img{height:35px}
+.urgency-bar{font-size:9px;padding:10px}
+.product-grid{gap:8px}
+.product-info{padding:12px 8px}
+.product-title{font-size:14px}
+.product-price{font-size:14px}
+.product-badge{font-size:8px;padding:4px 6px}
+.tap-hint{font-size:10px}
+.product-stock{font-size:9px}
+.modal-content{padding:15px}
+.modal-title{font-size:24px}
+.size-btn{padding:10px;font-size:12px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="logo-header">
+<img src="IMPACT.webp" alt="Impact">
+</header>
+
+<div class="urgency-bar">
+<span>⚡ LIMITED DROP</span> — 20 UNITS EACH • NO RESTOCK
+</div>
+
+<section class="products-section">
+<div class="section-title">
+<h2>THE DROP</h2>
+<p class="section-hint">click a poster below to dive deeper</p>
+</div>
+
+<div class="product-grid">
+<div class="product-card" onclick="openModal('bkd')">
+<div class="product-img-wrap">
+<span class="product-badge">🔥 SELLING FAST</span>
+<img src="BACK.webp" class="product-img">
+</div>
+<div class="product-info">
+<h3 class="product-title">B.K.D TEE</h3>
+<p class="product-price">$18.88</p>
+<p class="tap-hint">⚡ TAP TO SECURE</p>
+<p class="product-stock">Only 12 left</p>
+</div>
+</div>
+
+<div class="product-card" onclick="openModal('net')">
+<div class="product-img-wrap">
+<span class="product-badge">🏆 BESTSELLER</span>
+<img src="new net hero back.webp" class="product-img">
+</div>
+<div class="product-info">
+<h3 class="product-title">NETENYAHU X NYC</h3>
+<p class="product-price">$18.88</p>
+<p class="tap-hint">⚡ TAP TO SECURE</p>
+<p class="product-stock">Only 8 left</p>
+</div>
+</div>
+
+<div class="product-card" onclick="openModal('camo')">
+<div class="product-img-wrap">
+<span class="product-badge">⏰ ALMOST GONE</span>
+<img src="web pcmao.webp" class="product-img">
+</div>
+<div class="product-info">
+<h3 class="product-title">Niger Delta Insurgent CAMO TEE</h3>
+<p class="product-price">$18.88</p>
+<p class="tap-hint">⚡ TAP TO SECURE</p>
+<p class="product-stock">Only 5 left</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="hero">
+<img src="protesters.webp" class="hero-img">
+
+<svg class="hero-map" viewBox="0 0 1599 1066" preserveAspectRatio="none">
+<a href="index.html">
+<path class="hit" d="M554 1064 L518 948 L526 772 L436 702 L334 704 L334 548 L430 494 L466 258 L682 28 L824 102 L862 282 L854 532 L722 536 L692 756 L654 1064 Z"/>
+</a>
+<a href="APPAREL.html">
+<path class="hit" d="M1006 1064 L958 752 L898 548 L862 536 L862 252 L1016 110 L1148 166 L1230 338 L1302 612 L1214 676 L1180 828 L1120 1064 Z"/>
+</a>
+<a href="afirst.HTML">
+<path class="hit" d="M1596 1046 L1402 1048 L1394 752 L1354 748 L1342 688 L1420 538 L1462 372 L1558 210 L1598 392 Z"/>
+</a>
+</svg>
+
+<p class="hero-hint">Click a poster to read more</p>
+</section>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+<div class="modal" onclick="event.stopPropagation()">
+<button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow=''">×</button>
+
+<div class="modal-gallery" id="modalGallery">
+<div class="gallery-track" id="galleryTrack"></div>
+<div class="gallery-dots" id="galleryDots"></div>
+<span class="swipe-hint-modal">← SWIPE →</span>
+</div>
+
+<div class="modal-content">
+<h2 class="modal-title" id="modalTitle"></h2>
+<p class="modal-sub" id="modalSub"></p>
+<p class="modal-price"><span class="og">$26.00</span> $18.88</p>
+<div class="modal-savings">🎉 YOU SAVE $7.12 (28% OFF)</div>
+
+<span class="size-label">SELECT SIZE — GOING FAST</span>
+<div class="size-buttons" id="sizeButtons"></div>
+
+<button class="buy-btn" id="buyBtn" disabled onclick="buyNow()">SELECT A SIZE</button>
+<p class="stock-warning">🔥 Only <span id="stockCount">12</span> left — selling fast!</p>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+<p>IMPACT THREADS © 2026</p>
+</footer>
+
+<script>
+const PRODUCTS = {
+bkd: {
+title: 'B.K.D TEE',
+sub: 'Beware Killer Drones Graphic Tee',
+images: ['BACK.webp', 'webpfrontblack.webp'],
+stock: 12,
+sizes: ['S', 'M', 'L'],
+variants: { 'S': '53042565579116', 'M': '53042565611884', 'L': '53042565644652' }
+},
+net: {
+title: 'NETENYAHU X NYC',
+sub: 'Bibi Runs The Streets',
+images: ['new net hero back.webp', 'webpfrontblack.webp'],
+stock: 8,
+sizes: ['S', 'M', 'L'],
+variants: { 'S': '53045443723628', 'M': '53045443690860', 'L': '53045443658092' }
+},
+camo: {
+title: 'Niger Delta Insurgent CAMO TEE',
+sub: 'Niger Delta Camo',
+images: ['web pcmao.webp', 'webp blal back.webp'],
+stock: 5,
+sizes: ['S', 'M', 'L'],
+variants: { 'S': '53045438644588', 'M': '53045438677356', 'L': '53045438710124' }
+}
+};
+
+const SHOPIFY = 'https://shop.impact-threads.com';
+let currentProduct = null;
+let selectedSize = null;
+let currentSlide = 0;
+
+// Minimal safe fbq shim used across pages: queue events if fbq not yet loaded
+window._fbqQueue = window._fbqQueue || [];
+window.safeFbq = function(){
+	if (typeof fbq === 'function'){
+		try{ fbq.apply(null, arguments); }catch(e){}
+	} else {
+		window._fbqQueue.push(Array.prototype.slice.call(arguments));
+	}
+};
+
+function openModal(productId) {
+const p = PRODUCTS[productId];
+currentProduct = productId;
+selectedSize = null;
+currentSlide = 0;
+
+document.getElementById('modalTitle').textContent = p.title;
+document.getElementById('modalSub').textContent = p.sub;
+document.getElementById('stockCount').textContent = p.stock;
+
+// Pixel: report product view (send all variant ids available for this product)
+try{
+	if (window.safeFbq) window.safeFbq('track', 'ViewContent', { content_ids: Object.values(p.variants), content_type: 'product' });
+}catch(e){}
+
+const track = document.getElementById('galleryTrack');
+const dots = document.getElementById('galleryDots');
+track.innerHTML = '';
+dots.innerHTML = '';
+
+p.images.forEach((src, i) => {
+const slide = document.createElement('div');
+slide.className = 'gallery-slide';
+slide.innerHTML = '<img src="' + src + '" alt="' + p.title + '">';
+track.appendChild(slide);
+
+const dot = document.createElement('div');
+dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+dot.onclick = function() { goToSlide(i); };
+dots.appendChild(dot);
+});
+
+track.style.transform = 'translateX(0)';
+
+const sizeContainer = document.getElementById('sizeButtons');
+sizeContainer.innerHTML = '';
+p.sizes.forEach(function(size) {
+const btn = document.createElement('button');
+btn.className = 'size-btn';
+btn.textContent = size;
+btn.onclick = function() { selectSize(size, btn); };
+sizeContainer.appendChild(btn);
+});
+
+document.getElementById('buyBtn').disabled = true;
+document.getElementById('buyBtn').textContent = 'SELECT A SIZE';
+document.getElementById('modalOverlay').classList.add('active');
+document.body.style.overflow = 'hidden';
+
+setupSwipe();
+}
+
+function closeModal(e) {
+if (e.target.id === 'modalOverlay') {
+document.getElementById('modalOverlay').classList.remove('active');
+document.body.style.overflow = '';
+}
+}
+
+function goToSlide(index) {
+currentSlide = index;
+document.getElementById('galleryTrack').style.transform = 'translateX(-' + (index * 100) + '%)';
+document.querySelectorAll('.gallery-dot').forEach(function(d, i) {
+d.classList.toggle('active', i === index);
+});
+}
+
+function setupSwipe() {
+const gallery = document.getElementById('modalGallery');
+let startX = 0;
+let diff = 0;
+
+gallery.ontouchstart = function(e) { startX = e.touches[0].clientX; };
+gallery.ontouchmove = function(e) { diff = e.touches[0].clientX - startX; };
+gallery.ontouchend = function() {
+const p = PRODUCTS[currentProduct];
+if (diff > 50 && currentSlide > 0) goToSlide(currentSlide - 1);
+else if (diff < -50 && currentSlide < p.images.length - 1) goToSlide(currentSlide + 1);
+diff = 0;
+};
+}
+
+function selectSize(size, btn) {
+selectedSize = size;
+document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('selected'); });
+btn.classList.add('selected');
+document.getElementById('buyBtn').disabled = false;
+document.getElementById('buyBtn').textContent = 'SECURE NOW — $18.88';
+}
+
+function buyNow() {
+if (!currentProduct || !selectedSize) return;
+const variant = PRODUCTS[currentProduct].variants[selectedSize];
+if (variant) {
+	try{ if (window.safeFbq) window.safeFbq('track', 'InitiateCheckout', { content_ids: [variant], content_type: 'product', currency: 'USD', value: 18.88 }); }catch(e){}
+	window.location.href = SHOPIFY + '/cart/' + variant + ':1?checkout';
+}
+}
+</script>
+
+</body>
+</html>

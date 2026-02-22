@@ -1,0 +1,15 @@
+{
+  "name": "image-convert-webp",
+  "version": "1.0.0",
+  "description": "Convert raster images to WebP and update HTML to use <picture> fallback.",
+  "main": "scripts/convert-images.js",
+  "scripts": {
+    "convert-images": "node scripts/convert-images.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "glob": "^10.2.7",
+    "sharp": "^0.32.0"
+  }
+}

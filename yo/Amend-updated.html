@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEND_INSURGENCY.exe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.15; }
+        }
+
+        @keyframes textGlitch {
+            0% { text-shadow: 2px 2px #8B6F47, -2px -2px #5D6B4A; }
+            25% { text-shadow: -2px 2px #8B6F47, 2px -2px #5D6B4A; }
+            50% { text-shadow: 2px -2px #8B6F47, -2px 2px #5D6B4A; }
+            75% { text-shadow: -2px -2px #8B6F47, 2px 2px #5D6B4A; }
+            100% { text-shadow: 2px 2px #8B6F47, -2px -2px #5D6B4A; }
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        @keyframes fadeInHint {
+            to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-15px);
+            }
+            60% {
+                transform: translateY(-8px);
+            }
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0a0a08;
+            color: #D4C4A8;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* VHS/CRT Effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.15),
+                    rgba(0, 0, 0, 0.15) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            z-index: 1000;
+            animation: flicker 0.15s infinite;
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(
+                180deg,
+                transparent 0%,
+                rgba(139, 111, 71, 0.1) 50%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 999;
+            animation: scanline 8s linear infinite;
+        }
+
+        /* Camo Background */
+        .camo-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.08;
+            z-index: 0;
+            background-image: 
+                radial-gradient(ellipse at 20% 30%, #4A5C3A 0%, transparent 40%),
+                radial-gradient(ellipse at 60% 70%, #8B6F47 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 20%, #5D6B4A 0%, transparent 40%),
+                radial-gradient(ellipse at 10% 80%, #6B5442 0%, transparent 40%);
+        }
+
+        /* // BACK BUTTON */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: block;
+        }
+
+        .back-button img {
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 0 6px rgba(0,0,0,0.8));
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .back-button:hover img {
+            transform: scale(1.05);
+            opacity: 0.85;
+        }
+
+        /* SCROLL HINT */
+        .scroll-hint-container {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: auto;
+            z-index: 999;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInHint 1s forwards 2s;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-hint-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scroll-hint-shadow {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            display: block;
+            top: 0;
+            left: 0;
+            opacity: 0.3;
+            filter: blur(1px);
+        }
+
+        .scroll-hint {
+            position: relative;
+            width: 100%;
+            height: auto;
+            display: block;
+            animation: bounce 2s infinite 1s;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            border-bottom: 1px solid rgba(93,107,74,0.3);
+        }
+
+        .glitch-wrapper {
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 800;
+            color: #5D6B4A;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            position: relative;
+            z-index: 1;
+            animation: textGlitch 3s infinite;
+        }
+
+        .hero h1::before,
+        .hero h1::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero h1::before {
+            color: #8B6F47;
+            z-index: -1;
+            animation: glitch 0.3s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+
+        .hero h1::after {
+            color: #4A5C3A;
+            z-index: -2;
+            animation: glitch 0.3s reverse infinite;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+
+        .subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: #8B6F47;
+            margin: 2rem 0 1rem 0;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .terminal-text {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            color: #5D6B4A;
+            letter-spacing: 0.05em;
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Section */
+        .section {
+            padding: 5rem 0;
+            border-bottom: 1px solid rgba(74,92,58,0.2);
+            position: relative;
+        }
+
+        .section-header {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+            color: #8B6F47;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .section-header::before {
+            content: '> ';
+            color: #5D6B4A;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            color: #5D6B4A;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            line-height: 1.1;
+        }
+
+        /* Visceral Opening */
+        .visceral {
+            background: linear-gradient(135deg, rgba(107,84,66,0.15) 0%, rgba(74,92,58,0.15) 100%);
+            padding: 3rem;
+            margin: 3rem 0;
+            border-left: 3px solid #8B6F47;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visceral::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(93,107,74,0.03) 2px,
+                rgba(93,107,74,0.03) 4px
+            );
+            pointer-events: none;
+        }
+
+        .visceral p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            line-height: 1.7;
+            color: #E8DCC8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Impact Statement */
+        .impact {
+            font-size: clamp(1.8rem, 3.5vw, 3rem);
+            font-weight: 700;
+            color: #8B6F47;
+            line-height: 1.3;
+            margin: 4rem 0;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .impact::before {
+            content: '//';
+            position: absolute;
+            top: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            color: #5D6B4A;
+            opacity: 0.2;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Content Block */
+        .content-block {
+            font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+            line-height: 1.9;
+            color: #D4C4A8;
+            margin-bottom: 2.5rem;
+        }
+
+        .content-block p {
+            margin-bottom: 1.8rem;
+        }
+
+        .content-block strong {
+            color: #8B6F47;
+            font-weight: 600;
+        }
+
+        /* The Truth Box */
+        .truth-box {
+            background: rgba(139,111,71,0.1);
+            border: 2px solid #8B6F47;
+            padding: 3rem;
+            margin: 5rem 0;
+            position: relative;
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+            line-height: 1.7;
+            color: #E8DCC8;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .truth-box::before {
+            content: '[REALITY_CHECK]';
+            position: absolute;
+            top: -0.8rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0a0a08;
+            padding: 0 1rem;
+            color: #8B6F47;
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+        }
+
+        /* People Grid - More Compact */
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .people-card {
+            background: rgba(74,92,58,0.08);
+            border: 1px solid rgba(93,107,74,0.4);
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .people-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: #8B6F47;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .people-card:hover {
+            background: rgba(74,92,58,0.15);
+            transform: translateX(5px);
+        }
+
+        .people-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .people-card h4 {
+            font-family: 'Space Mono', monospace;
+            color: #8B6F47;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .people-card p {
+            color: #D4C4A8;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Stats - Terminal Style */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .stat-box {
+            background: rgba(74,92,58,0.05);
+            border: 1px solid rgba(93,107,74,0.3);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            background: rgba(74,92,58,0.12);
+            border-color: #8B6F47;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            color: #8B6F47;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #D4C4A8;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            line-height: 1.4;
+        }
+
+        /* Timeline - Cyber Style */
+        .timeline {
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, transparent 0%, #5D6B4A 10%, #8B6F47 50%, #5D6B4A 90%, transparent 100%);
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background: #8B6F47;
+            border: 2px solid #0a0a08;
+            border-radius: 50%;
+        }
+
+        .timeline-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: #8B6F47;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #D4C4A8;
+        }
+
+        /* Quote - Less Formal */
+        .quote {
+            background: rgba(93,107,74,0.08);
+            border-left: 4px solid #5D6B4A;
+            padding: 2rem 2rem 2rem 2.5rem;
+            margin: 4rem 0;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: #E8DCC8;
+            font-style: italic;
+            position: relative;
+        }
+
+        .quote::before {
+            content: '"';
+            position: absolute;
+            left: 0.5rem;
+            top: 0.5rem;
+            font-size: 3rem;
+            color: #5D6B4A;
+            opacity: 0.3;
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Single Line Impact */
+        .single-line {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            color: #8B6F47;
+            text-align: center;
+            margin: 4rem 0;
+            line-height: 1.3;
+            padding: 0 2rem;
+        }
+
+        /* Key Points - More Y2K */
+        .key-points {
+            background: rgba(74,92,58,0.05);
+            border: 1px solid rgba(93,107,74,0.3);
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .key-points h3 {
+            font-family: 'Space Mono', monospace;
+            color: #8B6F47;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-points li {
+            padding-left: 2rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            line-height: 1.7;
+            color: #D4C4A8;
+            font-size: 1rem;
+        }
+
+        .key-points li::before {
+            content: '>';
+            position: absolute;
+            left: 0.5rem;
+            color: #5D6B4A;
+            font-family: 'Space Mono', monospace;
+            font-weight: bold;
+        }
+
+        /* Disclaimer - Terminal Style */
+        .disclaimer {
+            background: rgba(139,111,71,0.08);
+            border: 1px solid rgba(139,111,71,0.5);
+            padding: 2.5rem;
+            margin: 4rem 0;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .disclaimer h3 {
+            color: #8B6F47;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .disclaimer h3::before {
+            content: '! ';
+        }
+
+        .disclaimer p {
+            color: #D4C4A8;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            font-family: 'Space Mono', monospace;
+            color: #6B5442;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(74,92,58,0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 3rem 0;
+            }
+
+            .people-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .visceral {
+                padding: 2rem;
+            }
+
+            .scroll-hint-container {
+                width: 150px;
+                bottom: 30px;
+            }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17632251744"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-17632251744');
+</script>
+
+</head>
+<!-- Event snippet for Purchase conversion page -->
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-17632251744/z5xaCKDR7qgbEOCe29dB',
+      'value': 1.0,
+      'currency': 'USD'
+  });
+</script>
+
+<body>
+    <div class="scanline"></div>
+    <div class="camo-bg"></div>
+
+    <!-- // BACK BUTTON (ROUTED TO aindex (10).html) -->
+    <a href="index.html" class="back-button">
+        <img src="menu and buttons/impact logo fst itt (2).png" alt="Back to Impact Home">
+    </a>
+
+    <div class="hero">
+        <div class="glitch-wrapper">
+            <h1 data-text="MEND">MEND</h1>
+        </div>
+        <div class="subtitle">MOVEMENT_FOR_EMANCIPATION_NIGER_DELTA</div>
+        <div class="terminal-text">>>> 2006-2009 | GRASSROOTS COALITION<span class="cursor">_</span></div>
+    </div>
+
+    <!-- SCROLL HINT -->
+    <div class="scroll-hint-container" id="scrollHintContainer">
+        <picture>
+            <source type="image/webp" srcset="optimized/scrollhint-936.webp">
+            <img src="optimized/scrollhint-936.webp" alt="Scroll Hint Shadow" class="scroll-hint-shadow">
+        </picture>
+        <picture>
+            <source type="image/webp" srcset="optimized/scrollhint-936.webp">
+            <img src="optimized/scrollhint-936.webp" alt="Scroll Hint" class="scroll-hint" id="scrollHint">
+        </picture>
+    </div>
+
+    <div class="container">
+        <section class="section">
+            <div class="section-header">INIT_CONTEXT.exe</div>
+            <h2 class="section-title">Imagine This</h2>
+            
+            <div class="visceral">
+                <p>You're 19. You live in a fishing village. Your grandfather fished these creeks. Your father fished these creeks. You were supposed to fish these creeks.</p>
+                
+                <p>But the water is black now. Thick with crude oil. The fish are dead or poisoned. Gas flares light up the night sky 24/7 like some dystopian movie, except this is your real life. The air tastes metallic. Your little sister has a persistent cough that won't go away.</p>
+                
+                <p>Every single day, you watch massive oil tankers float past your village. BILLIONS of dollars in oil. You can see the infrastructure from your window. The pipelines. The platforms. The wealth extraction happening in real-time.</p>
+                
+                <p>Your village has no clean water. No jobs. No hospital. The school barely functions. Meanwhile, Shell and Chevron executives are somewhere in air-conditioned offices counting money that came from under your feet.</p>
+                
+                <p>What do you do?</p>
+            </div>
+
+            <div class="impact">
+                This isn't a hypothetical.<br>This was the Niger Delta for decades.
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">PROFILE_ANALYSIS.dat</div>
+            <h2 class="section-title">Who They Actually Were</h2>
+            
+            <div class="content-block">
+                <p>MEND wasn't some organized terrorist cell that formed out of nowhere. It was a coalition of people who had been pushed past every breaking point.</p>
+                
+                <p>These were real people with real lives that got destroyed by oil extraction:</p>
+            </div>
+
+            <div class="people-grid">
+                <div class="people-card">
+                    <h4>Fishermen</h4>
+                    <p>Generations of creek knowledge. Waters turned to poison. Traditional livelihood: destroyed. That knowledge? Became tactical advantage in guerrilla warfare.</p>
+                </div>
+                <div class="people-card">
+                    <h4>Ex-Pipeline Workers</h4>
+                    <p>They BUILT the infrastructure. Maintained it. Watched billions flow through while communities starved. They knew every weak point.</p>
+                </div>
+                <div class="people-card">
+                    <h4>Unemployed Youth</h4>
+                    <p>Educated. Motivated. Zero opportunities. Living on top of national wealth while experiencing crushing poverty. Rage becomes inevitable.</p>
+                </div>
+                <div class="people-card">
+                    <h4>Former Militants</h4>
+                    <p>Veterans from earlier Delta resistance movements. Ijaw, Ogoni struggles. They carried institutional knowledge of asymmetric warfare.</p>
+                </div>
+                <div class="people-card">
+                    <h4>Ex-Political Thugs</h4>
+                    <p>Used by politicians during elections, discarded after. They learned how violence works as political currency in Nigeria firsthand.</p>
+                </div>
+            </div>
+
+            <div class="single-line">
+                They didn't choose to be fighters.<br>The system made them fighters.
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">REALITY_CHECK.sys</div>
+            <h2 class="section-title">The Uncomfortable Truth</h2>
+            
+            <div class="truth-box">
+                Nonviolent movements are ignored.<br>
+                Economic growth, for many, is nonexistent.<br><br>
+                The only thing that draws a response is violence.<br><br>
+                And only when the violence reaches a level that disrupts<br>
+                the Nigerian economy and threatens the political classes<br>
+                are Delta residents' concerns addressed.
+            </div>
+
+            <div class="content-block">
+                <p>Let's be real about this. For DECADES before MEND, people tried the "right way":</p>
+                
+                <p><strong>Ken Saro-Wiwa</strong> led peaceful environmental protests against Shell. He was a writer, an activist, someone who believed in nonviolent resistance. The Nigerian government executed him in 1995. Killed him for speaking out.</p>
+                
+                <p>Hundreds of protests. All met with military violence. Court cases? Buried in corruption. Appeals to oil companies' conscience? Ignored. International laws? Meaningless when you're powerless.</p>
+                
+                <p>The system taught them a brutal lesson: <strong>Your suffering doesn't matter until it costs us money.</strong></p>
+                
+                <p>So when MEND formed in 2006, they weren't being irrational. They were being logical. Peaceful protest = bullets and graves. Armed resistance = suddenly there are negotiations, amnesty programs, international attention.</p>
+                
+                <p>The violence wasn't the problem. The violence was the symptom of a system that only responded to violence.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-number">70%</span>
+                    <span class="stat-label">Nigeria's Oil<br>From Delta</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">$400B+</span>
+                    <span class="stat-label">Oil Revenue<br>Since 1960</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">13%</span>
+                    <span class="stat-label">Revenue Returns<br>to Delta</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">2,000+</span>
+                    <span class="stat-label">Oil Spills<br>Annually</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">CONTEXT_LOAD.txt</div>
+            <h2 class="section-title">What They Were Fighting</h2>
+            
+            <div class="content-block">
+                <p><strong>Environmental Genocide:</strong> Oil spills everywhere. Gas flares burning 24/7, poisoning the air. Mangrove forests dead. Fish populations gone. Their HOME was becoming uninhabitable while oil companies counted profits.</p>
+                
+                <p><strong>Economic Theft:</strong> Imagine living on top of a gold mine but you're broke. That was the Delta. All the oil wealth flowing OUT while communities had no clean water, no electricity, no infrastructure. Pure extraction with zero investment.</p>
+                
+                <p><strong>State Violence:</strong> Military occupation. Security forces protecting oil installations while terrorizing residents. Protest peacefully? Get shot. Take legal action? Get arrested on fake charges. The message was clear: shut up or die.</p>
+                
+                <p><strong>Systematic Betrayal:</strong> Decades of promises. Development that never came. Compensation that was never paid. Revenue-sharing that was never implemented. Every negotiation ending in lies. Trust wasn't broken—it was systematically destroyed.</p>
+            </div>
+
+            <div class="quote">
+                They turned our land into a wasteland, our waters into poison. When we protest peacefully, they shoot us. When we go to court, they bribe the judges. When we appeal to their conscience, they ignore us. So now they'll hear us through the only language they understand: disruption of their profits.
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">TIMELINE.log</div>
+            <h2 class="section-title">How It Went Down</h2>
+            
+            <div class="content-block">
+                <p>MEND's tactics were sophisticated because many members had INSIDER KNOWLEDGE. Former pipeline workers knew exactly where to hit. Fishermen knew creek networks that made pursuit impossible. Ex-militants brought tactical experience. Ex-political thugs understood psychological warfare.</p>
+                
+                <p>This wasn't random chaos. This was calculated asymmetric warfare by people who understood their enemy's vulnerabilities.</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">EARLY 2006</div>
+                    <div class="timeline-content">MEND announces formation. Coordinated attacks on Shell and Chevron facilities. Oil production drops immediately. First communiqué declares intent to achieve resource control. Government dismisses them. Bad move.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">FEB 2006</div>
+                    <div class="timeline-content">Four foreign oil workers kidnapped. International headlines. Oil companies start evacuating foreign staff. Pattern established: hostages for leverage, treated well, released unharmed to maintain moral distinction from terrorists.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2006-2007</div>
+                    <div class="timeline-content">Peak operations. Maritime attacks on offshore platforms. Pipeline sabotage drops Nigeria's output by 25%. Global oil prices SPIKE. Now they have everyone's attention. Federal government forced to acknowledge what they'd ignored for decades.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2008</div>
+                    <div class="timeline-content">Major infrastructure attacks continue. Government tries military crackdown. FAILS. Creek terrain favors defenders. Former fishermen's waterway knowledge proves decisive. You can't beat people fighting for their home on their own territory.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2009</div>
+                    <div class="timeline-content">Federal government offers amnesty: monthly stipends, job training, reintegration. Many fighters accept—not because problems were solved, but because SOMETHING is better than nothing. Coordinated MEND operations decrease. But splinter groups continue.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2010s</div>
+                    <div class="timeline-content">New groups emerge: Niger Delta Avengers and others. Core grievances STILL unaddressed. Oil spills continue. Poverty persists. The cycle continues because the system never fundamentally changed.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">ANALYSIS.md</div>
+            <h2 class="section-title">Understanding Their Position</h2>
+            
+            <div class="content-block">
+                <p>Here's what people don't get: these weren't ideological revolutionaries fighting for some abstract cause. They were people watching their kids grow up in toxic environments. Their livelihoods destroyed. Their futures stolen. While the infrastructure extracting BILLIONS sat visible from their windows.</p>
+                
+                <p>The fishermen who became militants didn't wake up wanting to fight. They wanted to FISH. The pipeline workers didn't want to be insurgents—they wanted FAIR EMPLOYMENT. The youth didn't choose militancy—they wanted EDUCATION, OPPORTUNITY, A FUTURE.</p>
+            </div>
+
+            <div class="single-line">
+                Sometimes you really gotta get in the field.
+            </div>
+
+            <div class="content-block">
+                <p>When every peaceful option is closed. When legal challenges are corrupted. When protests are massacred. When your community is being slowly poisoned and nobody with power cares—what option remains?</p>
+                
+                <p>MEND was the answer that emerged when a system left people no alternative.</p>
+            </div>
+
+            <div class="key-points">
+                <h3>WHAT_THEY_ACHIEVED:</h3>
+                <ul>
+                    <li>Forced national and international recognition of Delta grievances that had been ignored for 50+ years</li>
+                    <li>Proved that disrupting oil production was the ONLY language that got response from government and corporations</li>
+                    <li>Channeled resource wealth back to communities through oil bunkering and amnesty payments</li>
+                    <li>Demonstrated tactical sophistication that made military forces look amateur—local knowledge is power</li>
+                    <li>Created diplomatic pressure through foreign worker kidnappings that forced companies to acknowledge security failures</li>
+                    <li>Secured amnesty program benefits—proving violence achieved what decades of peace couldn't</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <p>Look, it's not a clean story. Kidnapping traumatizes people even when hostages are treated well. Infrastructure destruction has ripple effects. Some operations crossed lines. This isn't some heroic tale where everyone's morally pure.</p>
+                
+                <p>But it's not simple villainy either. MEND members were products of a system that gave them NOTHING while demanding their silence as their home was destroyed for profit. Fishermen whose alternative was watching families starve next to pipelines carrying billions. Youth whose choice was toxic-wasteland unemployment or fighting for control.</p>
+            </div>
+
+            <div class="impact">
+                The reality:<br>
+                Nonviolent resistance tried for decades = graves.<br>
+                Violence = amnesty, attention, negotiations.<br><br>
+                The system taught them that lesson.<br>
+                Don't blame them for learning it.
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">CONCLUSION.txt</div>
+            <h2 class="section-title">The Complex Truth</h2>
+            
+            <div class="content-block">
+                <p>This page exists to EDUCATE, not endorse every action. Some MEND tactics crossed ethical lines. Kidnapping harms people. Infrastructure destruction has consequences. Some actions were indefensible regardless of context. We're not here to say everything they did was right.</p>
+                
+                <p>But understanding MEND means understanding the SYSTEM that created them. A region systematically poisoned while producing national wealth. Communities violently suppressed for peaceful protest. Legal avenues blocked by corruption. Decades of broken promises. A state that responded ONLY to violence.</p>
+                
+                <p>MEND fighters weren't born militants. They were MADE militants. Former fishermen became raiders because waters were destroyed. Ex-workers became saboteurs because they understood the infrastructure of exploitation. Youth became fighters because no other future existed.</p>
+                
+                <p>The lesson isn't "violence is good." The lesson is: when systems ignore all peaceful resistance, when they meet justice appeals with bullets, when they value oil profits over human lives—people eventually get in the field. Because sometimes that's the only option a broken system leaves.</p>
+            </div>
+
+            <div class="disclaimer">
+                <h3>EDUCATIONAL_CONTEXT</h3>
+                <p>This is historical and contextual analysis of the MEND insurgency. It explains conditions, motivations, and perspectives without endorsing specific violent acts.</p>
+                <p>Understanding WHY people resort to armed resistance in extreme marginalization ≠ condoning all methods. The Niger Delta represents a complex case study in resource conflicts, environmental justice, and institutional failure.</p>
+                <p>Insurgency reality is messy and morally complex. This page presents that complexity honestly while acknowledging some tactics crossed ethical lines deserving criticism even as we understand the pressure cooker that produced them.</p>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>>> EDUCATIONAL_RESOURCE_NIGER_DELTA_INSURGENCY</p>
+            <p>>> HISTORICAL_CONTEXT_AND_ANALYSIS_V1.0</p>
+            <p>>> UNDERSTANDING_THE_PAST_TO_CONTEXTUALIZE_THE_PRESENT</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== SCROLL HINT FUNCTIONALITY =====
+            const scrollHintContainer = document.getElementById('scrollHintContainer');
+            let hasScrolled = false;
+
+            // Hide hint when user scrolls
+            window.addEventListener('scroll', function() {
+                if (!hasScrolled && window.scrollY > 50) {
+                    hasScrolled = true;
+                    scrollHintContainer.classList.add('hidden');
+                }
+            });
+
+            // Click hint to scroll down smoothly
+            scrollHintContainer.addEventListener('click', function() {
+                window.scrollBy({
+                    top: window.innerHeight,
+                    behavior: 'smooth'
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

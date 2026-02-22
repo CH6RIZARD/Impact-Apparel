@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Meta Pixel Code -->
+<script>
+(function(){
+  var PIXEL_ID = "2925018871025865";
+  if (window.fbq && typeof window.fbq === "function") return;
+
+  // Create fbq stub that queues calls (preserve original queue pattern)
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];
+  // DO NOT insert external script immediately; expose loader to trigger later
+  window.__load_fbq = function(){
+    if (window.__fbq_loaded) return; window.__fbq_loaded = true;
+    t=b.createElement(e);t.async=!0; t.src=v; s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
+  };
+  }(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  // Queue the init and pageview immediately; external script will consume queue when loaded
+  fbq('init', PIXEL_ID);
+  fbq('track', 'PageView');
+
+  // Load external pixel on first user interaction or after 2000ms
+  var _fbqTriggered = false;
+  function _triggerFbq(){ if(_fbqTriggered) return; _fbqTriggered = true; try{ window.__load_fbq(); }catch(e){}; window.removeEventListener('pointerdown', _triggerFbq); window.removeEventListener('keydown', _triggerFbq); }
+  window.addEventListener('pointerdown', _triggerFbq, {passive:true});
+  window.addEventListener('keydown', _triggerFbq, {passive:true});
+  setTimeout(_triggerFbq, 2000);
+})();
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2925018871025865&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMPACT — Limited Drop</title>
+
+<!-- Preconnects for fonts and pixel to improve LCP / handshake time -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+
+<!-- Explicit favicon to avoid default /favicon.ico 404s -->
+<link rel="icon" href="Z.SUB FOR HERO/IMPACT.webp">
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#000;font-family:'Inter',sans-serif;color:#fff}
+
+.logo-header{text-align:center;padding:20px 15px;background:#000}
+.logo-header img{height:45px}
+
+.urgency-bar{
+background:linear-gradient(90deg,#1a1a1a,#111);
+border-top:1px solid #C4A57B;
+border-bottom:1px solid #C4A57B;
+text-align:center;
+padding:12px;
+font-size:11px;
+letter-spacing:2px
+}
+.urgency-bar span{color:#C4A57B}
+
+.products-section{background:#0a0a0a;padding:30px 15px 40px}
+.section-title{text-align:center;margin-bottom:25px}
+.section-title h2{font-family:'Bebas Neue';font-size:26px;letter-spacing:5px}
+.section-hint{font-size:11px;color:#888;margin-top:8px}
+
+.product-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+max-width:800px;
+margin:0 auto
+}
+
+.product-card{
+background:#111;
+border:1px solid #222;
+border-radius:8px;
+overflow:hidden;
+cursor:pointer;
+transition:.25s
+}
+.product-card:hover{
+border-color:#C4A57B;
+transform:translateY(-4px);
+box-shadow:0 10px 30px rgba(196,165,123,.15)
+}
+
+/* ICE X NYC centered below */
+.product-card:nth-child(4){
+grid-column: 2;
+margin-top: 8px;
+}
+
+.product-img-wrap{position:relative;aspect-ratio:1;overflow:hidden}
+.product-img{width:100%;height:100%;object-fit:cover;transition:.3s}
+.product-card:hover .product-img{transform:scale(1.05)}
+.product-badge{position:absolute;top:8px;left:8px;background:#C4A57B;color:#000;font-size:10px;font-weight:700;padding:5px 10px;border-radius:3px}
+.product-info{text-align:center;padding:15px 10px}
+.product-title{font-family:'Bebas Neue';font-size:18px;letter-spacing:1px;line-height:1.2;margin-bottom:6px}
+.product-price{color:#C4A57B;font-weight:700;font-size:18px}
+.tap-hint{font-size:12px;color:#4ade80;margin-top:8px;animation:pulse 1.5s ease infinite;font-weight:600}
+.product-stock{font-size:11px;color:#e74c3c;margin-top:5px;font-weight:500}
+
+/* Secure Callout - Gold Style like reference */
+.secure-callout{
+margin:30px auto 0;
+max-width:800px;
+padding:0 15px
+}
+.secure-box{
+background:#111;
+border:1px solid #222;
+border-radius:12px;
+padding:18px 20px;
+display:flex;
+align-items:center;
+gap:15px;
+cursor:pointer;
+transition:.2s
+}
+.secure-box:hover{
+border-color:#333;
+background:#151515
+}
+.secure-icon{
+width:44px;
+height:44px;
+background:#1a1a1a;
+border:1px solid #333;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-shrink:0
+}
+.secure-icon svg{
+width:20px;
+height:20px;
+stroke:#C4A57B
+}
+.secure-text{
+flex:1
+}
+.secure-title{
+font-size:13px;
+font-weight:600;
+color:#C4A57B;
+letter-spacing:1px;
+margin-bottom:4px
+}
+.secure-sub{
+font-size:11px;
+color:#666;
+letter-spacing:0.5px;
+text-align:center;
+}
+.secure-arrow{
+color:#C4A57B;
+font-size:20px;
+opacity:.6
+}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* THREADS TALK Section - Gold header like reference */
+.threads-talk{
+background:#0a0a0a;
+padding:50px 20px 60px;
+border-top:1px solid #151515
+}
+.threads-talk-header{
+text-align:center;
+margin-bottom:30px
+}
+.threads-talk-header h2{
+font-family:'Bebas Neue';
+font-size:32px;
+letter-spacing:8px;
+color:#C4A57B;
+margin-bottom:8px
+}
+.talk-tagline{
+font-size:12px;
+color:#555;
+letter-spacing:3px;
+text-transform:uppercase
+}
+
+.review-carousel{
+max-width:500px;
+margin:0 auto;
+position:relative;
+min-height:100px
+}
+
+.review-card{
+display:none;
+text-align:center;
+padding:20px;
+animation:fadeIn .3s ease
+}
+.review-card.active{
+display:block
+}
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(5px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.review-text{
+font-size:15px;
+line-height:1.6;
+color:#999;
+margin-bottom:12px
+}
+.review-author{
+font-size:11px;
+color:#555
+}
+
+.review-nav{
+text-align:center;
+margin-top:20px
+}
+.review-dots{
+display:flex;
+justify-content:center;
+gap:8px;
+margin-bottom:10px
+}
+.review-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:#222;
+cursor:pointer;
+transition:.2s
+}
+.review-dot:hover{
+background:#444
+}
+.review-dot.active{
+background:#C4A57B
+}
+.review-tap{
+font-size:10px;
+color:#444;
+letter-spacing:1px
+}
+
+/* Hero Section */
+.hero{position:relative;width:100%;overflow:hidden;background:#f5f5f5}
+.hero-img{width:100%;height:auto;display:block}
+
+.hero-map{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+z-index:10
+}
+.hero-map .hit{
+fill:rgba(0,0,0,0);
+stroke:rgba(196,165,123,0);
+stroke-width:6;
+cursor:pointer;
+transition:.25s
+}
+.hero-map .hit:hover{
+fill:rgba(0,0,0,0);
+stroke:rgba(0,0,0,0);
+filter:none;
+}
+
+.hero-hint{
+position:absolute;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,.85);
+padding:10px 20px;
+border-radius:30px;
+font-size:12px;
+z-index:20;
+animation:bounce 2s ease infinite
+}
+
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
+
+/* Modal */
+.modal-overlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.95);
+z-index:1000;
+align-items:center;
+justify-content:center;
+padding:15px
+}
+.modal-overlay.active{display:flex}
+.modal{
+background:#111;
+border:1px solid #333;
+border-radius:12px;
+max-width:420px;
+width:100%;
+max-height:95vh;
+overflow-y:auto;
+position:relative
+}
+.modal-close{
+position:absolute;
+top:10px;right:15px;
+background:rgba(0,0,0,.7);
+border:none;
+color:#fff;
+font-size:24px;
+cursor:pointer;
+z-index:20;
+width:36px;height:36px;
+border-radius:50%
+}
+
+.modal-gallery{position:relative;width:100%;aspect-ratio:1;overflow:hidden;touch-action:pan-y}
+.gallery-track{display:flex;width:100%;height:100%;transition:transform .3s ease}
+.gallery-slide{min-width:100%;height:100%}
+.gallery-slide img{width:100%;height:100%;object-fit:cover}
+.gallery-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10}
+.gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:.2s}
+.gallery-dot.active{background:#C4A57B;transform:scale(1.2)}
+.swipe-hint-modal{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.6);z-index:10}
+
+.modal-content{padding:20px}
+.modal-title{font-family:'Bebas Neue';font-size:28px;letter-spacing:3px;margin-bottom:5px}
+.modal-sub{font-size:12px;color:#666;margin-bottom:15px}
+.modal-price{font-size:24px;color:#C4A57B;font-weight:700;margin-bottom:15px}
+.modal-price .og{text-decoration:line-through;color:#555;font-size:16px;margin-right:8px}
+.modal-savings{text-align:center;background:#1a2e1a;color:#4ade80;padding:8px;font-size:11px;letter-spacing:1px;margin-bottom:15px;border-radius:4px}
+
+.size-label{font-size:11px;color:#888;letter-spacing:1px;margin-bottom:8px;display:block}
+.size-buttons{display:flex;gap:8px;margin-bottom:15px}
+.modal .size-btn{
+flex:1;
+padding:12px;
+background:#1a1a1a;
+border:2px solid #333;
+color:#fff;
+font-family:'Inter';
+font-size:13px;
+font-weight:600;
+cursor:pointer;
+border-radius:6px;
+transition:.2s;
+max-width:none
+}
+.modal .size-btn:hover{border-color:#C4A57B}
+.modal .size-btn.selected{background:#C4A57B;border-color:#C4A57B;color:#000}
+
+.buy-btn{
+width:100%;
+padding:16px;
+background:#C4A57B;
+border:none;
+color:#000;
+font-family:'Bebas Neue';
+font-size:18px;
+letter-spacing:3px;
+cursor:pointer;
+border-radius:6px;
+transition:.2s;
+margin-bottom:10px;
+display:flex;
+align-items:center;
+justify-content:center
+}
+.buy-btn:hover{background:#d4b58b;transform:scale(1.02)}
+.buy-btn:disabled{background:#333;color:#666;cursor:not-allowed}
+
+.stock-warning{text-align:center;font-size:11px;color:#e74c3c;letter-spacing:1px}
+
+/* Modal Secure Banner - Gold Style */
+.modal-secure-banner{
+display:flex;
+align-items:center;
+gap:12px;
+background:#151515;
+border:1px solid #222;
+border-radius:8px;
+padding:14px;
+margin-bottom:15px
+}
+.modal-secure-banner svg{
+width:18px;
+height:18px;
+stroke:#C4A57B;
+flex-shrink:0
+}
+.modal-secure-banner span{
+font-size:11px;
+letter-spacing:1px;
+color:#C4A57B;
+font-weight:500
+}
+
+.modal-payment-row{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+margin:12px 0;
+padding:10px;
+background:#0a0a0a;
+border-radius:6px
+}
+.modal-payment-row span{
+font-size:10px;
+color:#666;
+letter-spacing:1px
+}
+
+/* Footer */
+.footer{
+text-align:center;
+padding:40px 20px;
+background:#000;
+border-top:1px solid #1a1a1a;
+margin-top:60px
+}
+.footer p{font-size:10px;color:#666;letter-spacing:2px}
+
+@media(max-width:500px){
+.logo-header img{height:35px}
+.urgency-bar{font-size:9px;padding:10px}
+.product-grid{gap:8px;grid-template-columns:repeat(2,1fr)}
+/* For small screens we want a simple 2x2 flow. Remove special positioning
+  so items flow naturally into two columns and two rows. */
+.product-card:nth-child(3), .product-card:nth-child(4){grid-column:auto;grid-row:auto;margin:12px 0 0 0;justify-self:stretch}
+.product-info{padding:12px 8px}
+.product-title{font-size:14px}
+.product-price{font-size:14px}
+.product-badge{font-size:8px;padding:4px 6px}
+.tap-hint{font-size:10px}
+.product-stock{font-size:9px}
+.secure-box{padding:14px 15px;gap:12px}
+.secure-icon{width:38px;height:38px}
+.secure-title{font-size:12px}
+.secure-sub{font-size:10px}
+.modal-content{padding:15px}
+.modal-title{font-size:24px}
+.modal .size-btn{padding:10px;font-size:12px}
+.threads-talk{padding:40px 15px 50px}
+.threads-talk-header h2{font-size:26px;letter-spacing:6px}
+.review-text{font-size:14px}
+}
+
+@media(max-width:380px){
+.product-grid{grid-template-columns:repeat(2,1fr);gap:6px}
+/* Ensure 2x2 layout on very small screens — keep normal document order
+  so items 1-4 fill row-wise into 2 columns. */
+.product-card:nth-child(3), .product-card:nth-child(4){grid-column:auto;grid-row:auto;margin:6px 0 0 0;justify-self:stretch}
+.product-info{padding:10px 6px}
+.product-title{font-size:13px}
+.product-price{font-size:13px}
+.product-badge{font-size:7px;padding:3px 5px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="logo-header">
+<img src="Z.SUB FOR HERO/IMPACT.webp" alt="Impact">
+</header>
+
+<div class="urgency-bar">
+<span>⚡ LIMITED DROP</span> — 20 UNITS EACH • NO RESTOCK
+</div>
+
+<section class="products-section">
+<div class="section-title">
+<h2>THE DROP</h2>
+<p class="section-hint">select size • secure checkout</p>
+</div>
+
+<div class="product-grid">
+<!-- B.K.D TEE -->
+<div class="product-card" onclick="openModal('bkd')">
+<div class="product-img-wrap">
+<span class="product-badge">🏆 BESTSELLER</span>
+<img src="Z.SUB FOR HERO/BACK.webp" class="product-img" loading="lazy" decoding="async">
+</div>
+<div class="product-info">
+<h3 class="product-title">B.K.D TEE</h3>
+<p class="product-price">$18.88</p>
+<p class="tap-hint">TAP TO SECURE</p>
+<p class="product-stock">Only 12 left</p>
+</div>
+</div>
+
+<!-- NETENYAHU X NYC -->
+<div class="product-card" onclick="openModal('net')">
+<div class="product-img-wrap">
+<img src="Z.SUB FOR HERO/new net hero back.webp" class="product-img" loading="lazy" decoding="async">
+</div>
+<div class="product-info">
+<h3 class="product-title">NETENYAHU X NYC</h3>
+<p class="product-price">$18.88</p>
+<p class="tap-hint">TAP TO SECURE</p>
+<p class="product-stock">Only 8 left</p>
+</div>
+</div>
+
+<!-- CAMO TEE -->
+<div class="product-card" onclick="openModal('camo')">
+<div class="product-img-wrap">
+<img src="Z.SUB FOR HERO/web pcmao.webp" class="product-img" loading="lazy" decoding="async">
+</div>
+<div class="product-info">
+<h3 class="product-title">Niger Delta CAMO</h3>
+<p class="product-price">$18.88</p>
+<p class="tap-hint">TAP TO SECURE</p>
+<p class="product-stock">Only 5 left</p>
+</div>
+</div>
+
+<!-- ICE X NYC - Centered below -->
+<div class="product-card" onclick="openModal('ice')">
+<div class="product-img-wrap">
+<span class="product-badge">‼️NEW DROP</span>
+<img src="Z.SUB FOR HERO/backice.webp" class="product-img" loading="lazy" decoding="async">
+</div>
+<div class="product-info">
+<h3 class="product-title">ICE X NYC</h3>
+<p class="product-price">$18.88</p>
+<p class="tap-hint">TAP TO SECURE</p>
+<p class="product-stock">Only 15 left</p>
+</div>
+</div>
+</div>
+
+<!-- Secure Checkout Callout - Gold Style -->
+<div class="secure-callout">
+<div class="secure-box" onclick="scrollToReviews()">
+<div class="secure-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+</div>
+<div class="secure-text">
+<p class="secure-title">SECURE CHECKOUT • SSL ENCRYPTED</p>
+<p class="secure-sub">Ships 2-4 days • USA warehouse • </p>
+</div>?
+<span class="secure-arrow">→</span>
+</div>
+</div>
+</section>
+
+<section class="threads-talk" id="threadsTalk">
+<div class="threads-talk-header">
+<h2>THREADS TALK</h2>
+<p class="talk-tagline">order and speak out</p>
+</div>
+
+<div class="review-carousel">
+<div class="review-card active" data-index="0">
+<p class="review-text">came way faster than expected. good weight to the shirt</p>
+<span class="review-author">— Marcus T. • L • ATL</span>
+</div>
+<div class="review-card" data-index="1">
+<p class="review-text">ngl this shit surprised me</p>
+<span class="review-author">— David O. • M • Houston</span>
+</div>
+<div class="review-card" data-index="2">
+<p class="review-text">camo look crazier in person. size down if you want snug</p>
+<span class="review-author">— Chris K. • S • LA</span>
+</div>
+<div class="review-card" data-index="3">
+<p class="review-text">my roommate tried to claim it lol. not mad at the price</p>
+<span class="review-author">— Tyler R. • L • Phoenix</span>
+</div>
+<div class="review-card" data-index="4">
+<p class="review-text">lowkey should've ordered 2. straight into rotation</p>
+<span class="review-author">— Jay M. • M • Brooklyn</span>
+</div>
+<div class="review-card" data-index="5">
+<p class="review-text">yeah this one stays. quality actually there</p>
+<span class="review-author">— Andre P. • L • Chicago</span>
+</div>
+</div>
+
+<div class="review-nav">
+<div class="review-dots">
+<span class="review-dot active" onclick="showReview(0)"></span>
+<span class="review-dot" onclick="showReview(1)"></span>
+<span class="review-dot" onclick="showReview(2)"></span>
+<span class="review-dot" onclick="showReview(3)"></span>
+<span class="review-dot" onclick="showReview(4)"></span>
+<span class="review-dot" onclick="showReview(5)"></span>
+</div>
+<span class="review-tap">tap to view more</span>
+</div>
+</section>
+
+<!-- Hero Poster Section -->
+<section class="hero">
+<img src="Z.SUB FOR HERO/protesters.webp" class="hero-img" fetchpriority="high" decoding="async" width="1599" height="1066" alt="Impact protest">
+
+<svg class="hero-map" viewBox="0 0 1599 1066" preserveAspectRatio="none">
+<a href="index.html">
+<path class="hit" d="M554 1064 L518 948 L526 772 L436 702 L334 704 L334 548 L430 494 L466 258 L682 28 L824 102 L862 282 L854 532 L722 536 L692 756 L654 1064 Z"/>
+</a>
+<a href="B.K.D/APPAREL.html">
+<path class="hit" d="M1006 1064 L958 752 L898 548 L862 536 L862 252 L1016 110 L1148 166 L1230 338 L1302 612 L1214 676 L1180 828 L1120 1064 Z"/>
+</a>
+<a href="netneyahu/afirst.html">
+<path class="hit" d="M1596 1046 L1402 1048 L1394 752 L1354 748 L1342 688 L1420 538 L1462 372 L1558 210 L1598 392 Z"/>
+</a>
+</svg>
+
+<p class="hero-hint">Click a poster to read more</p>
+</section>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+<div class="modal" onclick="event.stopPropagation()">
+<button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow=''">×</button>
+
+<div class="modal-gallery" id="modalGallery">
+<div class="gallery-track" id="galleryTrack"></div>
+<div class="gallery-dots" id="galleryDots"></div>
+<span class="swipe-hint-modal">← SWIPE →</span>
+</div>
+
+<div class="modal-content">
+<h2 class="modal-title" id="modalTitle"></h2>
+<p class="modal-sub" id="modalSub"></p>
+<p class="modal-price"><span class="og">$26.00</span> $18.88</p>
+<div class="modal-savings">🎉 YOU SAVE $7.12 (28% OFF)</div>
+
+<!-- Secure Checkout - Gold Style -->
+<div class="modal-secure-banner">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+<span>SECURE CHECKOUT • SSL ENCRYPTED</span>
+</div>
+
+<span class="size-label">SELECT SIZE</span>
+<div class="size-buttons" id="sizeButtons"></div>
+
+<button class="buy-btn" id="buyBtn" disabled onclick="buyNow()">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;margin-right:8px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+SELECT A SIZE
+</button>
+
+<!-- Payment Icons -->
+<div class="modal-payment-row">
+<span>Accepted:</span>
+<svg viewBox="0 0 38 24" height="18"><rect fill="#1a1a1a" width="38" height="24" rx="3"/><path fill="#fff" d="M13.5 17.5h-2.6l1.6-10h2.6l-1.6 10zm10.4-9.7c-.5-.2-1.3-.4-2.3-.4-2.5 0-4.3 1.3-4.3 3.2 0 1.4 1.3 2.2 2.2 2.6 1 .5 1.3.8 1.3 1.2 0 .6-.8 1-1.5 1-.9 0-1.5-.1-2.3-.5l-.3-.2-.3 2c.6.3 1.6.5 2.7.5 2.7 0 4.4-1.3 4.4-3.3 0-1.1-.7-1.9-2.2-2.6-.9-.4-1.5-.7-1.5-1.2 0-.4.5-.8 1.5-.8.9 0 1.5.2 2 .4l.2.1.4-1.9zm5 0h-2c-.6 0-1.1.2-1.4.8l-3.8 9h2.7l.5-1.5h3.3l.3 1.5h2.4l-2-9.8zm-3.2 6.3l1-2.8.6 2.8h-1.6zM10.8 7.8l-2.5 6.8-.3-1.3c-.5-1.6-2-3.3-3.7-4.2l2.3 8.4h2.7l4-9.7h-2.5z"/><path fill="#F9A51A" d="M6.4 7.8H2.3l-.1.3c3.2.8 5.3 2.8 6.2 5.1l-.9-4.5c-.1-.6-.6-.8-1.1-.9z"/></svg>
+<svg viewBox="0 0 38 24" height="18"><rect fill="#1a1a1a" width="38" height="24" rx="3"/><circle fill="#EB001B" cx="15" cy="12" r="7"/><circle fill="#F79E1B" cx="23" cy="12" r="7"/><path fill="#FF5F00" d="M19 7c1.7 1.3 2.8 3.4 2.8 5.7s-1.1 4.4-2.8 5.7c-1.7-1.3-2.8-3.4-2.8-5.7s1.1-4.4 2.8-5.7z"/></svg>
+<svg viewBox="0 0 38 24" height="18"><rect fill="#1a1a1a" width="38" height="24" rx="3"/><path fill="#fff" d="M19 7.5c-.8 0-1.5.2-2.1.6l.1 7.3c.6.4 1.3.6 2 .6 2.2 0 4-1.8 4-4s-1.8-4-4-4z"/><path fill="#fff" d="M15 12c0-1.4.7-2.6 1.8-3.4-.8-.5-1.7-.8-2.8-.8-2.8 0-5 2.2-5 5s2.2 5 5 5c1 0 2-.3 2.8-.8-1.1-.8-1.8-2-1.8-3.4v-1.6z"/></svg>
+<svg viewBox="0 0 38 24" height="18"><rect fill="#1a1a1a" width="38" height="24" rx="3"/><path fill="#fff" d="M19 6c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zm0 10.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5 4.5 2 4.5 4.5-2 4.5-4.5 4.5z"/><path fill="#fff" d="M19 9c-1.7 0-3 1.3-3 3h1.5c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5h1.5c0-1.7-1.3-3-3-3z"/></svg>
+</div>
+
+<p class="stock-warning">🔥 Only <span id="stockCount">12</span> left — selling fast!</p>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+<p>IMPACT THREADS © 2026</p>
+</footer>
+
+<script>
+const PRODUCTS = {
+bkd: {
+title: 'B.K.D TEE',
+sub: 'Beware Killer Drones Graphic Tee',
+images: ['Z.SUB FOR HERO/BACK.webp', 'Z.SUB FOR HERO/webpfrontblack.webp'],
+stock: 12,
+sizes: ['S', 'M', 'L'],
+variants: { 'S': '53042565579116', 'M': '53042565611884', 'L': '53042565644652' }
+},
+net: {
+title: 'NETENYAHU X NYC',
+sub: 'Bibi Runs The Streets',
+images: ['Z.SUB FOR HERO/new net hero back.webp', 'Z.SUB FOR HERO/webpfrontblack.webp'],
+stock: 8,
+sizes: ['S', 'M', 'L'],
+variants: { 'S': '53045443723628', 'M': '53045443690860', 'L': '53045443658092' }
+},
+camo: {
+title: 'Niger Delta Insurgent CAMO TEE',
+sub: 'Niger Delta Camo',
+images: ['Z.SUB FOR HERO/web pcmao.webp', 'Z.SUB FOR HERO/webp blal back.webp'],
+stock: 5,
+sizes: ['S', 'M', 'L'],
+variants: { 'S': '53045438644588', 'M': '53045438677356', 'L': '53045438710124' }
+},
+ice: {
+title: 'ICE X NYC',
+sub: 'Get em outta here',
+images: ['Z.SUB FOR HERO/backice.webp', 'Z.SUB FOR HERO/webpfrontblack.webp'],
+stock: 20,
+sizes: ['S', 'M', 'L'],
+variants: { 'S': '53064045068652', 'M': '53064045101420', 'L': '53064045035884' }
+}
+};
+
+const SHOPIFY = 'https://shop.impact-threads.com';
+let currentProduct = null;
+let selectedSize = null;
+let currentSlide = 0;
+
+// Safe fbq
+window._fbqQueue = window._fbqQueue || [];
+window.safeFbq = function(){
+    if (typeof fbq === 'function'){
+        try{ fbq.apply(null, arguments); }catch(e){}
+    } else {
+        window._fbqQueue.push(Array.prototype.slice.call(arguments));
+    }
+};
+
+// Flush queued events
+(function(){
+  if (window.__fbqFlushWatcher) return;
+  window.__fbqFlushWatcher = true;
+  function flush(){
+    if (typeof fbq !== "function") return false;
+    if (Array.isArray(window._fbqQueue) && window._fbqQueue.length){
+      try{
+        window._fbqQueue.forEach(args => fbq.apply(null, args));
+        window._fbqQueue.length = 0;
+      }catch(e){}
+    }
+    return true;
+  }
+  if (flush()) return;
+  var tries = 0, maxTries = 200;
+  var iv = setInterval(function(){
+    tries++;
+    if (flush() || tries >= maxTries) clearInterval(iv);
+  }, 50);
+})();
+
+// Scroll to reviews section
+function scrollToReviews() {
+    const reviewsSection = document.getElementById('threadsTalk');
+    if (reviewsSection) {
+        reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+// Review carousel
+let currentReview = 0;
+const reviewCards = document.querySelectorAll('.review-card');
+const reviewDots = document.querySelectorAll('.review-dot');
+
+function showReview(index) {
+    reviewCards.forEach(card => card.classList.remove('active'));
+    reviewDots.forEach(dot => dot.classList.remove('active'));
+    reviewCards[index].classList.add('active');
+    reviewDots[index].classList.add('active');
+    currentReview = index;
+}
+
+// Auto-rotate reviews
+setInterval(() => {
+    currentReview = (currentReview + 1) % reviewCards.length;
+    showReview(currentReview);
+}, 4000);
+
+// Make review carousel swipeable (pointer events)
+(function setupReviewSwipe(){
+  const carousel = document.querySelector('.review-carousel');
+  if (!carousel) return;
+  let startX = 0, pointerDown = false, diff = 0;
+  const threshold = 40; // pixels to trigger swipe
+
+  function onDown(e){
+    pointerDown = true;
+    startX = e.clientX;
+    if (e.pointerId) try{ carousel.setPointerCapture(e.pointerId); }catch(err){}
+    reviewCards.forEach(c => c.style.transition = 'none');
+  }
+
+  function onMove(e){
+    if (!pointerDown) return;
+    diff = e.clientX - startX;
+    const active = document.querySelector('.review-card.active');
+    if (active) active.style.transform = 'translateX(' + diff + 'px)';
+  }
+
+  function onUp(e){
+    if (!pointerDown) return;
+    pointerDown = false;
+    reviewCards.forEach(c => c.style.transition = '');
+    const active = document.querySelector('.review-card.active');
+    if (active) active.style.transform = '';
+    if (diff > threshold && currentReview > 0) showReview(currentReview - 1);
+    else if (diff < -threshold && currentReview < reviewCards.length - 1) showReview(currentReview + 1);
+    else showReview(currentReview);
+    diff = 0;
+    if (e.pointerId) try{ carousel.releasePointerCapture(e.pointerId); }catch(err){}
+  }
+
+  carousel.addEventListener('pointerdown', onDown);
+  carousel.addEventListener('pointermove', onMove);
+  carousel.addEventListener('pointerup', onUp);
+  carousel.addEventListener('pointercancel', onUp);
+  carousel.addEventListener('pointerleave', onUp);
+})();
+
+// Modal functions
+function openModal(productId) {
+const p = PRODUCTS[productId];
+currentProduct = productId;
+selectedSize = null;
+currentSlide = 0;
+
+document.getElementById('modalTitle').textContent = p.title;
+document.getElementById('modalSub').textContent = p.sub;
+document.getElementById('stockCount').textContent = p.stock;
+
+try{
+    if (window.safeFbq) window.safeFbq('track', 'ViewContent', { content_ids: Object.values(p.variants), content_type: 'product' });
+}catch(e){}
+
+const track = document.getElementById('galleryTrack');
+const dots = document.getElementById('galleryDots');
+track.innerHTML = '';
+dots.innerHTML = '';
+
+p.images.forEach((src, i) => {
+const slide = document.createElement('div');
+slide.className = 'gallery-slide';
+slide.innerHTML = '<img src="' + src + '" alt="' + p.title + '" loading="lazy" decoding="async">';
+track.appendChild(slide);
+
+const dot = document.createElement('div');
+dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+dot.onclick = function() { goToSlide(i); };
+dots.appendChild(dot);
+});
+
+track.style.transform = 'translateX(0)';
+
+const sizeContainer = document.getElementById('sizeButtons');
+sizeContainer.innerHTML = '';
+p.sizes.forEach(function(size) {
+const btn = document.createElement('button');
+btn.className = 'size-btn';
+btn.textContent = size;
+btn.onclick = function() { selectSize(size, btn); };
+sizeContainer.appendChild(btn);
+});
+
+document.getElementById('buyBtn').disabled = true;
+document.getElementById('buyBtn').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;margin-right:8px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>SELECT A SIZE';
+document.getElementById('modalOverlay').classList.add('active');
+document.body.style.overflow = 'hidden';
+
+setupSwipe();
+}
+
+function closeModal(e) {
+if (e.target.id === 'modalOverlay') {
+document.getElementById('modalOverlay').classList.remove('active');
+document.body.style.overflow = '';
+}
+}
+
+function goToSlide(index) {
+currentSlide = index;
+document.getElementById('galleryTrack').style.transform = 'translateX(-' + (index * 100) + '%)';
+document.querySelectorAll('.gallery-dot').forEach(function(d, i) {
+d.classList.toggle('active', i === index);
+});
+}
+
+function setupSwipe() {
+const gallery = document.getElementById('modalGallery');
+const track = document.getElementById('galleryTrack');
+let startX = 0;
+let pointerDown = false;
+const threshold = 50; // px
+
+function onPointerDown(e){
+  pointerDown = true;
+  startX = e.clientX;
+  // capture pointer to keep receiving moves
+  if (e.pointerId) try{ gallery.setPointerCapture(e.pointerId); }catch(err){}
+  track.style.transition = 'none';
+}
+
+function onPointerMove(e){
+  if (!pointerDown) return;
+  const dx = e.clientX - startX;
+  const percent = (dx / gallery.clientWidth) * 100;
+  track.style.transform = 'translateX(' + (-currentSlide * 100 + percent) + '%)';
+}
+
+function onPointerUp(e){
+  if (!pointerDown) return;
+  pointerDown = false;
+  const dx = e.clientX - startX;
+  const p = PRODUCTS[currentProduct];
+  track.style.transition = 'transform .3s ease';
+  if (dx > threshold && currentSlide > 0) goToSlide(currentSlide - 1);
+  else if (dx < -threshold && currentSlide < p.images.length - 1) goToSlide(currentSlide + 1);
+  else goToSlide(currentSlide);
+  if (e.pointerId) try{ gallery.releasePointerCapture(e.pointerId); }catch(err){}
+}
+
+// Pointer events cover both touch and mouse for most browsers
+gallery.addEventListener('pointerdown', onPointerDown);
+gallery.addEventListener('pointermove', onPointerMove);
+gallery.addEventListener('pointerup', onPointerUp);
+gallery.addEventListener('pointercancel', onPointerUp);
+gallery.addEventListener('pointerleave', onPointerUp);
+
+// Allow clicking a slide to advance to the next image (useful on desktop)
+function attachSlideClickHandlers(){
+  Array.from(document.querySelectorAll('#galleryTrack .gallery-slide')).forEach(function(slide, idx){
+    slide.onclick = function(e){
+      e.stopPropagation();
+      // if user clicks the visible slide, advance to next; otherwise go to clicked
+      if (idx === currentSlide){
+        const p = PRODUCTS[currentProduct];
+        if (currentSlide < p.images.length - 1) goToSlide(currentSlide + 1);
+      } else {
+        goToSlide(idx);
+      }
+    };
+  });
+}
+
+// Re-attach handlers whenever gallery content changes
+setTimeout(attachSlideClickHandlers, 0);
+}
+
+function selectSize(size, btn) {
+selectedSize = size;
+document.querySelectorAll('#sizeButtons .size-btn').forEach(function(b) { b.classList.remove('selected'); });
+btn.classList.add('selected');
+document.getElementById('buyBtn').disabled = false;
+document.getElementById('buyBtn').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;margin-right:8px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>SECURE NOW — $18.88';
+}
+
+function buyNow() {
+if (!currentProduct || !selectedSize) return;
+const variant = PRODUCTS[currentProduct].variants[selectedSize];
+if (variant) {
+    try{ if (window.safeFbq) window.safeFbq('track', 'InitiateCheckout', { content_ids: [variant], content_type: 'product', currency: 'USD', value: 18.88 }); }catch(e){}
+    window.location.href = SHOPIFY + '/cart/' + variant + ':1?checkout';
+}
+}
+</script>
+
+</body>
+</html>

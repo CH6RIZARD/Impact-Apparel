@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPACT HERO - WOMEN</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --olive-dark: #3a3d2e;
+      --olive-mid: #4a5240;
+      --tan: #c4a57b;
+      --sand: #d4c4a8;
+      --brown-dark: #2c2a26;
+    }
+
+    body {
+      font-family: 'Bebas Neue', Arial, sans-serif;
+      background-color: var(--olive-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .hero-image {
+      max-width: 500px;
+      width: 80%;
+      height: auto;
+      filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5));
+    }
+
+    /* COMING SOON TEXT */
+    .status {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .status h2 {
+      font-size: clamp(2rem, 8vw, 4rem);
+      color: var(--tan);
+      letter-spacing: 8px;
+      text-transform: uppercase;
+    }
+
+    .status p {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: var(--sand);
+      letter-spacing: 3px;
+      margin-top: 10px;
+      opacity: 0.7;
+    }
+
+    /* BACK LINK */
+    .back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .back-link:hover {
+      opacity: 0.7;
+      transform: scale(0.95);
+    }
+
+    .back-logo {
+      width: 120px;
+      height: auto;
+      animation: pulse-logo 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-logo {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      .hero {
+        padding: 80px 15px 40px;
+      }
+
+      .hero-image {
+        width: 95%;
+      }
+
+      .status h2 {
+        letter-spacing: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-link">
+    <picture>
+      <source type="image/webp" srcset="menu and buttons/impact logo fst itt (2).webp">
+      <img src="menu and buttons/impact logo fst itt (2).png" alt="IMPACT" class="back-logo">
+    </picture>
+  </a>
+
+  <section class="hero">
+  <img src="menu and buttons/sewing.webp" alt="We're Crafting - Women's Collection" class="hero-image">
+    
+    <div class="status">
+      <h2>We're Crafting</h2>
+      <p>Women's collection in development</p>
+    </div>
+  </section>
+
+</body>
+</html>

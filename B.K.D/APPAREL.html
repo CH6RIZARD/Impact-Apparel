@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B.K.D — BEWARE KILLER DRONES</title>
+    <!-- Resource hints: preconnect + dns-prefetch for fonts, analytics and shop CDN -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://shop.impact-threads.com" crossorigin>
+    <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+
+    <!-- Preload hero image (critical) -->
+    <link rel="preload" href="trademark.webp" as="image">
+
+    <!-- Load fonts non-blocking: preload as style then swap onload (with noscript fallback) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rock+Salt&family=Caveat:wght@400;700&family=Space+Mono:wght@400;700&display=swap" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rock+Salt&family=Caveat:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    </noscript>
+
+    <!-- Critical inline CSS: minimal styles required for above-the-fold render -->
+    <style>
+        /* Critical: background, nav pill and hero skeleton to avoid CLS */
+        html,body{height:100%;}
+        html{background:#060606;color:#f0f0f0;-webkit-font-smoothing:antialiased}
+        body{margin:0;background:#060606;font-family:Space Grotesk, sans-serif;overflow-x:hidden}
+        .nav-pill{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:rgba(15,15,15,0.95);border-radius:100px;padding:5px;display:flex;gap:3px;z-index:1000}
+        .nav-logo{height:22px;opacity:.9}
+        .hero{min-height:60vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:70px 0 40px;position:relative;background:#fae9d6}
+        .hero-visual{width:100%;display:flex;align-items:center;justify-content:center}
+        .hero-visual.skeleton{background:linear-gradient(90deg,#111 0%,#1a1a1a 50%,#111 100%);background-size:200% 100%;animation:shimmer 1.2s linear infinite}
+        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        .hero-img{width:95vw;max-width:900px;height:auto;display:block}
+        /* Ensure main content invisible until hero skeleton removed to avoid FOUC */
+        .main-content{visibility:visible}
+    </style>
+    <!-- Small non-blocking script to remove hero skeleton once image is ready -->
+    <script>
+        (function(){
+            function removeSkeleton(){
+                try{
+                    var v = document.querySelector('.hero-visual');
+                    if(v) v.classList.remove('skeleton');
+                }catch(e){}
+            }
+            document.addEventListener('DOMContentLoaded', function(){
+                var img = document.getElementById('heroImg');
+                if(!img){ removeSkeleton(); return; }
+                if(img.complete) { removeSkeleton(); return; }
+                img.addEventListener('load', removeSkeleton, {once:true});
+                setTimeout(removeSkeleton, 1200);
+            });
+        })();
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #060606;
+            --white: #f0f0f0;
+            --grey: #777;
+            --dim: #444;
+            --accent: #ff2a00;
+            --highlight: #f0f0f0;
+            --paper: #1a1d21;
+            --ink: #e8e6e1;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body.product-open {
+            overflow: hidden;
+        }
+
+        /* NAV PILL */
+        .nav-pill {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15,15,15,0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #1a1a1a;
+            border-radius: 100px;
+            padding: 5px;
+            display: flex;
+            gap: 3px;
+            z-index: 1000;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .nav-pill.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .nav-pill a {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.5px;
+            color: var(--grey);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .nav-pill a:hover { color: var(--white); }
+        .nav-pill a.active { background: var(--white); color: var(--bg); }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 12px !important;
+            border-right: 1px solid #2a2a2a;
+            margin-right: 3px;
+        }
+
+        .nav-back:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-logo {
+            height: 22px;
+            width: auto;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        .nav-back:hover .nav-logo {
+            opacity: 1;
+        }
+
+        /* FLOATING PRODUCT CARDS */
+        .floating-product {
+            position: fixed;
+            width: 90px;
+            height: 90px;
+            background: rgba(15,15,15,0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid #222;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 900;
+            transition: all 0.28s ease;
+            overflow: hidden;
+        }
+
+        .floating-product:hover {
+            transform: scale(1.1);
+            border-color: var(--accent);
+            z-index: 950;
+        }
+
+        .floating-product.locked {
+            width: 320px;
+            height: auto;
+            border-radius: 14px;
+            z-index: 999;
+        }
+
+        .floating-product.locked:hover {
+            transform: translate(-50%, -50%) scale(1.02);
+        }
+
+        .floating-product.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .floating-product-img {
+            width: 100%;
+            height: 90px;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .floating-product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.22s ease, opacity 0.18s ease;
+        }
+
+        .floating-product.locked .floating-product-img {
+            height: 260px;
+        }
+
+        .floating-product.locked .floating-product-img img {
+            object-fit: contain;
+            width: auto;
+            height: 100%;
+            max-width: 100%;
+            padding: 6px 10px;
+            background: #111;
+        }
+
+        .floating-product-info {
+            display: none;
+            padding: 15px;
+        }
+
+        .floating-product.locked .floating-product-info {
+            display: block;
+        }
+
+        .floating-product-name {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .floating-product-sub {
+            font-family: 'Rock Salt', cursive;
+            font-size: 10px;
+            color: var(--grey);
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .floating-product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid #222;
+        }
+
+        .floating-product-price {
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+        }
+
+        /* Slight responsive tweak: reduce floater size on small screens */
+        @media (max-width: 480px) {
+            .floating-product { width: 72px; height: 72px; border-radius: 8px; }
+            .floating-product-img { height: 72px; }
+            .floating-product.locked { width: 300px; }
+            .floating-product.locked .floating-product-img { height: 220px; }
+            .floating-product-name { font-size: 20px; }
+            .floating-product-sub { font-size: 9px; }
+            .floating-product-price { font-size: 14px; }
+        }
+
+        .floating-product-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            padding: 8px 15px;
+            background: var(--white);
+            color: var(--bg);
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .floating-product-btn:hover {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .floating-product-close {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--grey);
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+            z-index: 10;
+        }
+
+        .floating-product.locked .floating-product-close {
+            display: block;
+        }
+
+        .floating-product-tag {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            color: var(--white);
+            background: rgba(0,0,0,0.7);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .floating-product.locked .floating-product-tag {
+            display: none;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .main-content.hidden {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        /* ===================== */
+        /* PRODUCT PAGE          */
+        /* ===================== */
+        .product-page {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+        }
+
+        .product-page.open {
+            display: block;
+        }
+
+        .product-page-close {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: 1px solid #333;
+            color: var(--white);
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 2100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .product-page-close:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .product-page-inner {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 900px) {
+            .product-page-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product-gallery {
+            background: #0a0a0a;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-main-img {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .product-main-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .product-thumbnails {
+            display: flex;
+            gap: 10px;
+        }
+
+        .product-thumb {
+            width: 70px;
+            height: 70px;
+            background: #111;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.2s;
+            overflow: hidden;
+        }
+
+        .product-thumb:hover {
+            border-color: var(--grey);
+        }
+
+        .product-thumb.active {
+            border-color: var(--white);
+        }
+
+        .product-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 1px solid #111;
+        }
+
+        @media (max-width: 900px) {
+            .product-details {
+                border-left: none;
+                border-top: 1px solid #111;
+                padding: 40px 25px 80px;
+            }
+        }
+
+        .product-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .product-title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: clamp(42px, 8vw, 72px);
+            font-weight: 400;
+            letter-spacing: 2px;
+            line-height: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .product-subtitle {
+            font-family: 'Rock Salt', cursive;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--grey);
+            margin-bottom: 30px;
+        }
+
+        .product-price {
+            font-family: 'Space Mono', monospace;
+            font-size: 28px;
+            color: var(--white);
+            margin-bottom: 25px;
+        }
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--grey);
+            line-height: 1.7;
+            max-width: 380px;
+            margin-bottom: 35px;
+        }
+
+        .product-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 320px;
+        }
+
+        .size-select {
+            width: 100%;
+            padding: 14px 16px;
+            background: #111;
+            border: 1px solid #222;
+            color: var(--white);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23777' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .size-select:focus {
+            outline: none;
+            border-color: var(--white);
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 16px;
+            background: var(--white);
+            border: none;
+            color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .add-to-cart:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .product-note {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            margin-top: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* CART TOAST */
+        .cart-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--white);
+            color: var(--bg);
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 3000;
+            transform: translateY(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .cart-toast.show {
+            transform: translateY(0);
+        }
+
+        .cart-toast-text {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .cart-toast-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            margin-top: 2px;
+        }
+
+        .cart-toast-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            padding: 10px 18px;
+            background: var(--bg);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cart-toast-btn:hover {
+            background: var(--accent);
+        }
+
+        /* ===================== */
+        /* HERO                  */
+        /* ===================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 70px 0 40px;
+            position: relative;
+            background: #fae9d6;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            flex: 1;
+        }
+
+        .hero-img {
+            width: 95vw;
+            max-width: 900px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        @media (min-width: 768px) {
+            .hero-img {
+                width: 80vw;
+            }
+        }
+
+        .hero-tag {
+            font-family: 'Rock Salt', cursive;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #555;
+            margin-top: 25px;
+        }
+
+        .hero-apparel {
+            display: block;
+            margin-top: 8px;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 12px;
+        }
+
+        .hero-btn {
+            margin-top: 45px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            padding: 14px 38px;
+            background: #1a1a1a;
+            color: #f0f0f0;
+            text-decoration: none;
+            border-radius: 100px;
+            transition: 0.2s;
+        }
+
+        .hero-btn:hover { background: var(--accent); color: var(--white); }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 25px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 3px;
+            color: #888;
+        }
+
+        /* ===================== */
+        /* AWARENESS SECTION     */
+        /* ===================== */
+        .awareness {
+            background: var(--paper);
+            color: var(--ink);
+            padding: 100px 30px;
+            position: relative;
+        }
+
+        .awareness::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .awareness-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .awareness-label {
+            font-family: 'Rock Salt', cursive;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 30px;
+        }
+
+        .awareness-head {
+            font-family: 'Permanent Marker', cursive;
+            font-size: clamp(28px, 5vw, 52px);
+            font-weight: 400;
+            line-height: 1.25;
+            margin-bottom: 50px;
+        }
+
+        .awareness-head em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .drone-visual {
+            margin: 50px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .drone-visual img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border: 8px solid #2a2d31;
+        }
+
+        .drone-visual-caption {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            color: #555;
+            letter-spacing: 1px;
+        }
+
+        .awareness-text {
+            margin-top: 45px;
+            font-family: 'Caveat', cursive;
+            font-size: 24px;
+            line-height: 1.5;
+            color: #9a978f;
+            max-width: 700px;
+        }
+
+        .awareness-text p {
+            margin-bottom: 25px;
+        }
+
+        .awareness-text strong {
+            color: var(--ink);
+        }
+
+        .awareness-text .highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+
+        .stat-num {
+            font-family: 'Permanent Marker', cursive;
+            font-size: clamp(22px, 3.6vw, 40px);
+            font-weight: 400;
+            line-height: 0.95;
+        }
+
+        .stat-num.red { color: var(--accent); }
+        .stat-num.muted { color: var(--dim); }
+
+        .awareness-stats {
+            display: flex;
+            gap: 20px;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-wrap: nowrap; /* force single horizontal row */
+            margin-top: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .awareness-stat span { display: block; }
+
+        /* allow items to compress so the row fits without scroll */
+        .awareness-stat { flex: 1 1 0; min-width: 0; text-align: center; padding: 4px 6px; }
+
+        /* Small screens: reduce sizes but keep single row */
+        @media (max-width: 420px) {
+            .stat-num { font-size: clamp(18px, 6vw, 30px); }
+            .stat-label { font-size: 14px; }
+            .awareness-stats { gap: 12px; padding: 10px 0; }
+        }
+
+        .stat-label {
+            font-family: 'Caveat', cursive;
+            font-size: 18px;
+            color: #7a7872;
+            margin-top: 5px;
+            max-width: 200px;
+        }
+
+        /* ===================== */
+        /* BAN SECTION           */
+        /* ===================== */
+        .ban {
+            background: var(--bg);
+            padding: 100px 30px;
+            border-top: 1px solid #151515;
+        }
+
+        .ban-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .ban-label {
+            font-family: 'Rock Salt', cursive;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 30px;
+        }
+
+        .ban-head {
+            font-family: 'Permanent Marker', cursive;
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        .ban-head span { color: var(--accent); }
+
+        .ban-text {
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            line-height: 1.6;
+            color: var(--grey);
+            margin-bottom: 25px;
+        }
+
+        .ban-text strong {
+            color: var(--white);
+        }
+
+        .ban-quote {
+            border-left: 2px solid var(--accent);
+            padding-left: 25px;
+            margin: 40px 0;
+            font-family: 'Permanent Marker', cursive;
+            font-size: 22px;
+            font-style: normal;
+            color: var(--white);
+            line-height: 1.4;
+        }
+
+        .ban-cta {
+            margin-top: 50px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .ban-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            padding: 16px 35px;
+            text-decoration: none;
+            border: 1px solid;
+            transition: 0.2s;
+        }
+
+        .ban-btn-primary {
+            background: var(--white);
+            color: var(--bg);
+            border-color: var(--white);
+        }
+
+        .ban-btn-primary:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+        }
+
+        .ban-btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border-color: var(--dim);
+        }
+
+        .ban-btn-secondary:hover { border-color: var(--white); }
+
+        /* ===================== */
+        /* IMPACT THREADS        */
+        /* ===================== */
+        .impact {
+            background: var(--accent);
+            color: var(--white);
+            padding: 70px 20px;
+            text-align: center;
+        }
+
+        .impact h2 {
+            font-family: 'Permanent Marker', cursive;
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+
+        .impact p {
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .impact-form {
+            display: flex;
+            max-width: 380px;
+            margin: 0 auto;
+            gap: 8px;
+        }
+
+        @media (max-width: 480px) { .impact-form { flex-direction: column; } }
+
+        .impact-form input {
+            flex: 1;
+            padding: 14px 16px;
+            background: var(--bg);
+            border: none;
+            color: var(--white);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+        }
+
+        .impact-form input::placeholder { color: var(--grey); }
+
+        .impact-form button {
+            padding: 14px 26px;
+            background: var(--white);
+            border: none;
+            color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        /* ===================== */
+        /* ABOUT + FOOTER        */
+        /* ===================== */
+        .about {
+            padding: 70px 20px;
+            text-align: center;
+            border-top: 1px solid #111;
+        }
+
+        .about-logo {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
+        .about p {
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+            color: var(--grey);
+            max-width: 360px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        footer {
+            padding: 28px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            border-top: 1px solid #111;
+        }
+
+        @media (max-width: 500px) { footer { flex-direction: column; gap: 12px; } }
+
+        footer a {
+            color: var(--dim);
+            text-decoration: none;
+            margin-left: 18px;
+            transition: color 0.2s;
+        }
+
+        footer a:hover { color: var(--white); }
+    </style>
+</head>
+<body>
+    <!-- NAV -->
+    <nav class="nav-pill" id="navPill">
+        <a href="index.html" class="nav-back" title="Back to Impact">
+            <img src="back home.webp" alt="Impact" class="nav-logo">
+        </a>
+        <a href="#home" class="active">HOME</a>
+        <a href="#info">INFO</a>
+        <a href="#act">ACT</a>
+    </nav>
+
+    <!-- FLOATING PRODUCT CARDS -->
+    <div class="floating-product" id="float1">
+        <button class="floating-product-close" onclick="event.stopPropagation(); unlockProduct('float1')">×</button>
+        <div class="floating-product-img">
+            <picture>
+                <source type="image/webp" srcset="back-close.webp">
+                <img src="back-close.png" alt="B.K.D Tee" loading="lazy">
+            </picture>
+        </div>
+        <span class="floating-product-tag">$18.88</span>
+        <div class="floating-product-info">
+            <div class="floating-product-name">B.K.D</div>
+            <div class="floating-product-sub">"BEWARE KILLER DRONES"</div>
+            <div class="floating-product-bottom">
+                <span class="floating-product-price">$18.88</span>
+                <button class="floating-product-btn">VIEW</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-product" id="float2">
+        <button class="floating-product-close" onclick="event.stopPropagation(); unlockProduct('float2')">×</button>
+        <div class="floating-product-img">
+            <picture>
+                <source type="image/webp" srcset="back-graphic.webp">
+                <img src="back-graphic.png" alt="B.K.D Tee" loading="lazy">
+            </picture>
+        </div>
+        <span class="floating-product-tag">$18.88</span>
+        <div class="floating-product-info">
+            <div class="floating-product-name">B.K.D</div>
+            <div class="floating-product-sub">"BEWARE KILLER DRONES"</div>
+            <div class="floating-product-bottom">
+                <span class="floating-product-price">$18.88</span>
+                <button class="floating-product-btn">VIEW</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-product" id="float3">
+        <button class="floating-product-close" onclick="event.stopPropagation(); unlockProduct('float3')">×</button>
+        <div class="floating-product-img">
+            <picture>
+                <source type="image/webp" srcset="front-blank.webp">
+                <img src="front-blank.png" alt="B.K.D Tee" loading="lazy">
+            </picture>
+        </div>
+        <span class="floating-product-tag">$18.88</span>
+        <div class="floating-product-info">
+            <div class="floating-product-name">B.K.D</div>
+            <div class="floating-product-sub">"BEWARE KILLER DRONES"</div>
+            <div class="floating-product-bottom">
+                <span class="floating-product-price">$18.88</span>
+                <button class="floating-product-btn">VIEW</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-product" id="float4">
+        <button class="floating-product-close" onclick="event.stopPropagation(); unlockProduct('float4')">×</button>
+        <div class="floating-product-img">
+            <picture>
+                <source type="image/webp" srcset="mix.webp">
+                <img src="mix.png" alt="B.K.D Tee" loading="lazy">
+            </picture>
+        </div>
+        <span class="floating-product-tag">$18.88</span>
+        <div class="floating-product-info">
+            <div class="floating-product-name">B.K.D</div>
+            <div class="floating-product-sub">"BEWARE KILLER DRONES"</div>
+            <div class="floating-product-bottom">
+                <span class="floating-product-price">$18.88</span>
+                <button class="floating-product-btn">VIEW</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <!-- HERO -->
+        <section class="hero" id="home">
+            <div class="hero-visual skeleton">
+                <img id="heroImg" src="trademark.webp" alt="B.K.D - Beware Killer Drones" class="hero-img" loading="eager">
+            </div>
+            <p class="hero-tag">BEWARE KILLER DRONES<br><span class="hero-apparel">— APPAREL —</span></p>
+            <a href="#info" class="hero-btn">LEARN MORE</a>
+            <span class="hero-scroll">SCROLL</span>
+        </section>
+
+        <!-- AWARENESS -->
+        <section class="awareness" id="info">
+            <div class="awareness-inner">
+                <span class="awareness-label">WHAT YOU DON'T KNOW</span>
+                <h2 class="awareness-head">Drones have developed and emerged<br><em>a new style of warfare.</em></h2>
+
+                <div class="drone-visual">
+                    <img src="game changer.webp" alt="Drone Workshop" loading="lazy">
+                    <span class="drone-visual-caption">FPV DRONE WITH PAYLOAD — $400</span>
+                </div>
+
+                <div class="awareness-text">
+                    <p>The technology evolved. <strong>The disregard for endless, thoughtless killing evolved with it.</strong></p>
+
+                    <p><span class="highlight">FPV pilots average 15–29 years old</span> — youth who grew up with gaming controllers and DIY electronics now define the battlefield.</p>
+
+                    <p>Modern warfare integrates civilian and youth skillsets into military systems, quietly reorganizing who participates and who defines outcomes. <strong>It increasingly removes physical presence while preserving consequence</strong> — closing the gap between morality and military action.</p>
+
+                    <p>These advances rob families from the chance of a funerals. burdens beyond bullets. <strong>5,000 miles away, a man can murk you wit what we used to play with as toys.</strong></p>
+
+                    <p>Most people have no idea how far down the slope of integrity war has fallen.</p>
+                </div>
+
+                <div class="awareness-stats">
+                    <div class="awareness-stat">
+                        <span class="stat-num red">$400</span>
+                        <span class="stat-label">FPV drone + payload</span>
+                    </div>
+                    <div class="awareness-stat">
+                        <span class="stat-num muted">$550</span>
+                        <span class="stat-label">Average commercial flight</span>
+                    </div>
+                    <div class="awareness-stat">
+                        <span class="stat-num red">0</span>
+                        <span class="stat-label">International laws banning autonomous killer drones</span>
+                    </div>
+                    <div class="awareness-stat">
+                        <span class="stat-num muted">∞</span>
+                        <span class="stat-label">Laws governing that $550 flight</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAN SECTION -->
+        <section class="ban">
+            <div class="ban-inner">
+                <h2 class="ban-head"><span>BEWARE</span></h2>
+
+                <p class="ban-text">The 2nd Amendment was written so citizens could bear arms against government tyranny. Muskets against muskets. A fair fight, at least in theory.</p>
+
+                <p class="ban-text"><strong>That balance no longer exists.</strong></p>
+
+                <p class="ban-text">A gaming controller and basic coding skills now unlocks strike capability that would've required an air force 20 years ago. Youth gamers and hobbyist engineers have a tactical edge our own military hasn't fully processed yet.</p>
+
+                <div class="ban-quote">"The right to bear arms" meant something when both sides had to look each other in the eye. Now one side doesn't even have to be in the same hemisphere.</div>
+<p class="ban-text">A teenager with code and hardware can now do what once required a nation.</p> <p class="ban-text"><strong>What were once toys now carry consequences. That power is arriving without guidance or guardrails.</strong></p>  <p class="ban-text">Awareness must precede acceptance.</p> 
+                
+                <div class="ban-cta">
+                    <a href="#act" class="ban-btn ban-btn-primary">JOIN THE MOVEMENT</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- IMPACT THREADS -->
+        <section class="impact" id="act">
+            <h2>Join Impact Threads</h2>
+            <p>Drops, updates, action. No spam.</p>
+            <form class="impact-form">
+                <input type="email" placeholder="EMAIL">
+                <button type="submit">JOIN</button>
+            </form>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="about">
+            <div class="about-logo">B.K.D</div>
+            <p>Apparel that carries a message. Wear it or don't. Now you know.</p>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <span>© 2025 B.K.D</span>
+            <div>
+                <a href="#">IG</a>
+                <a href="#">CONTACT</a>
+                <a href="#">TERMS</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- PRODUCT PAGE -->
+    <div class="product-page" id="productPage">
+        <button class="product-page-close" onclick="closeProductPage()">×</button>
+        <div class="product-page-inner">
+            <div class="product-gallery">
+                <div class="product-main-img">
+                    <picture>
+                        <source type="image/webp" srcset="mix.webp">
+                        <img src="mix.png" alt="B.K.D Tee" id="mainProductImg" loading="lazy">
+                    </picture>
+                </div>
+                <div class="product-thumbnails">
+                    <div class="product-thumb active" onclick="setMainImage('mix.png', this)">
+                        <picture>
+                            <source type="image/webp" srcset="mix.webp">
+                            <img src="mix.png" alt="Mix" loading="lazy">
+                        </picture>
+                    </div>
+                    <div class="product-thumb" onclick="setMainImage('front-blank.png', this)">
+                        <picture>
+                            <source type="image/webp" srcset="front-blank.webp">
+                            <img src="front-blank.png" alt="Front" loading="lazy">
+                        </picture>
+                    </div>
+                    <div class="product-thumb" onclick="setMainImage('back-close.png', this)">
+                        <picture>
+                            <source type="image/webp" srcset="back-close.webp">
+                            <img src="back-close.png" alt="Back Close" loading="lazy">
+                        </picture>
+                    </div>
+                    <div class="product-thumb" onclick="setMainImage('back-graphic.png', this)">
+                        <picture>
+                            <source type="image/webp" srcset="back-graphic.webp">
+                            <img src="back-graphic.png" alt="Back Graphic" loading="lazy">
+                        </picture>
+                    </div>
+                </div>
+            </div>
+            <div class="product-details">
+                <span class="product-label">B.K.D COLLECTION</span>
+                <h1 class="product-title">B.K.D</h1>
+                <p class="product-subtitle">"BEWARE KILLER DRONES"</p>
+                <div class="product-price">$18.88</div>
+                <p class="product-desc">Heavyweight 220gsm organic cotton. Screen printed front and back. Cut and sewn. Made to last.</p>
+                <div class="product-form">
+                    <select class="size-select" id="sizeSelect" onchange="updateCartButton()">
+                        <option value="">SELECT SIZE</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
+                    <div style="display:flex;gap:8px">
+                        <button class="add-to-cart" id="addToCart" disabled>ADD TO CART</button>
+                        <button class="add-to-cart" id="buyNow" disabled>BUY NOW</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART TOAST -->
+    <div class="cart-toast" id="cartToast">
+        <div>
+            <div class="cart-toast-text">Added to cart</div>
+            <div class="cart-toast-sub" id="cartToastSub">B.K.D Tee — Size M</div>
+        </div>
+        <button class="cart-toast-btn" onclick="viewCart()">VIEW CART</button>
+    </div>
+
+    <script>
+        // Product images (ordered for thumbnails)
+        const productImages = ['mix.png', 'front-blank.png', 'back-close.png', 'back-graphic.png'];
+        
+        // Floating products
+        const floaters = document.querySelectorAll('.floating-product');
+        // Map floater id -> full image src
+        const floaterImageMap = {
+            float1: 'back-close.png',
+            float2: 'back-graphic.png',
+            float3: 'front-blank.png',
+            float4: 'mix.png'
+        };
+        const floatPositions = [
+            { x: 20, y: 150, dx: 0.3, dy: 0.2 },
+            { x: window.innerWidth - 90, y: 250, dx: -0.25, dy: 0.35 },
+            { x: 30, y: window.innerHeight - 180, dx: 0.25, dy: -0.2 },
+            { x: window.innerWidth - 100, y: window.innerHeight - 250, dx: -0.3, dy: -0.25 }
+        ];
+
+        // Ensure floaters start inside the viewport and stay within margins
+        function normalizeFloatPositions() {
+            const minX = 15;
+            const minY = 70;
+            const maxX = Math.max(window.innerWidth - 90, minX + 10);
+            const maxY = Math.max(window.innerHeight - 90, minY + 10);
+            for (let i = 0; i < floatPositions.length; i++) {
+                const p = floatPositions[i];
+                if (typeof p.x !== 'number' || isNaN(p.x)) p.x = minX + (i * 30);
+                if (typeof p.y !== 'number' || isNaN(p.y)) p.y = minY + (i * 40);
+                p.x = Math.min(Math.max(p.x, minX), maxX);
+                p.y = Math.min(Math.max(p.y, minY), maxY);
+            }
+        }
+
+        // normalize immediately so initial placement is safe
+        normalizeFloatPositions();
+
+        let lockedFloater = null;
+
+        function animateFloaters() {
+            floaters.forEach((f, i) => {
+                if (f.classList.contains('locked') || f.classList.contains('hidden')) return;
+
+                const pos = floatPositions[i];
+                pos.x += pos.dx;
+                pos.y += pos.dy;
+
+                const margin = 80;
+                const maxX = window.innerWidth - 90;
+                const maxY = window.innerHeight - 90;
+
+                if (pos.x <= margin || pos.x >= maxX - margin) pos.dx *= -1;
+                if (pos.y <= margin || pos.y >= maxY - margin) pos.dy *= -1;
+
+                pos.x = Math.max(15, Math.min(maxX, pos.x));
+                pos.y = Math.max(70, Math.min(maxY, pos.y));
+
+                f.style.left = pos.x + 'px';
+                f.style.top = pos.y + 'px';
+            });
+
+            requestAnimationFrame(animateFloaters);
+        }
+
+        // Initialize positions and click handlers
+        floaters.forEach((f, i) => {
+            f.style.left = floatPositions[i].x + 'px';
+            f.style.top = floatPositions[i].y + 'px';
+
+            f.addEventListener('click', (e) => {
+                if (e.target.classList.contains('floating-product-close')) return;
+
+                if (f.classList.contains('locked')) {
+                    // Second click - open product page and show full image for this floater
+                    openProductPage(f.id);
+                } else {
+                    // First click - lock this floater
+                    lockProduct(f.id);
+                }
+            });
+        });
+
+        animateFloaters();
+
+        // Click-away handler: if a floater is locked and the user clicks outside it, unlock it
+        document.addEventListener('click', (e) => {
+            if (!lockedFloater) return;
+            const lockedEl = document.getElementById(lockedFloater);
+            if (!lockedEl) return;
+            // If click was inside the locked floater or on its close/button, ignore
+            if (lockedEl.contains(e.target) || e.target.classList.contains('floating-product-close') || e.target.classList.contains('floating-product-btn')) return;
+            unlockProduct(lockedFloater);
+        });
+
+        // Escape key to unlock
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lockedFloater) {
+                unlockProduct(lockedFloater);
+            }
+        });
+
+        function lockProduct(id) {
+            const f = document.getElementById(id);
+            
+            // Unlock any previously locked floater
+            floaters.forEach(fl => {
+                fl.classList.remove('locked');
+                fl.style.transform = 'none';
+            });
+            
+            f.classList.add('locked');
+            f.style.left = '50%';
+            f.style.top = '50%';
+            f.style.transform = 'translate(-50%, -50%)';
+            lockedFloater = id;
+            // Pixel: user clicked product (first tap)
+            try { safeFbq('track', 'ViewContent', { content_name: 'B.K.D Tee', content_category: 'Apparel' }); } catch(e){}
+        }
+
+        function unlockProduct(id) {
+            const f = document.getElementById(id);
+            f.classList.remove('locked');
+            f.style.transform = 'none';
+            const i = Array.from(floaters).indexOf(f);
+            floatPositions[i].x = Math.random() * (window.innerWidth - 150) + 50;
+            floatPositions[i].y = Math.random() * (window.innerHeight - 200) + 100;
+            lockedFloater = null;
+        }
+
+        function openProductPage(floaterId) {
+            document.getElementById('productPage').classList.add('open');
+            document.getElementById('navPill').classList.add('hidden');
+            document.body.classList.add('product-open');
+
+            // Hide all floaters
+            floaters.forEach(f => {
+                f.classList.add('hidden');
+                f.classList.remove('locked');
+                f.style.transform = 'none';
+            });
+
+            // Clear locked floater state so global click-away won't interfere with product interactions
+            lockedFloater = null;
+
+
+            // Initialize thumbnails (adds click handlers) and ensure a main image is visible
+            initThumbnailListeners();
+
+            // If opened from a floater, show the corresponding full image, otherwise default to first thumbnail
+            const main = document.getElementById('mainProductImg');
+            let chosenSrc = null;
+            if (floaterId && floaterImageMap[floaterId]) {
+                chosenSrc = floaterImageMap[floaterId];
+            } else {
+                const firstThumbImg = document.querySelector('.product-thumb img');
+                if (firstThumbImg) chosenSrc = firstThumbImg.getAttribute('src');
+            }
+            if (chosenSrc && main) main.src = chosenSrc;
+
+            // Set active thumbnail to match chosenSrc
+            document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+            if (chosenSrc) {
+                const thumbs = Array.from(document.querySelectorAll('.product-thumb img'));
+                for (const t of thumbs) {
+                    const s = t.getAttribute('src') || '';
+                    if (s.endsWith(chosenSrc) || chosenSrc.endsWith(s)) {
+                        t.parentElement.classList.add('active');
+                        break;
+                    }
+                }
+            }
+
+            // Reset form
+            document.getElementById('sizeSelect').value = '';
+            updateCartButton();
+
+            // Pixel: product page opened (second click / view details)
+            try { safeFbq('track', 'ViewContent', { content_name: 'B.K.D Tee', content_category: 'Apparel' }); } catch(e){}
+        }
+
+        function closeProductPage() {
+            document.getElementById('productPage').classList.remove('open');
+            document.getElementById('navPill').classList.remove('hidden');
+            document.body.classList.remove('product-open');
+            
+            // Show floaters again
+            floaters.forEach((f, i) => {
+                f.classList.remove('hidden');
+                floatPositions[i].x = Math.random() * (window.innerWidth - 150) + 50;
+                floatPositions[i].y = Math.random() * (window.innerHeight - 200) + 100;
+            });
+            
+            lockedFloater = null;
+        }
+
+        function setMainImage(src, thumb) {
+            const main = document.getElementById('mainProductImg');
+            if (main) {
+                // If the main image is wrapped in a <picture> with a <source srcset="*.webp">,
+                // update that <source> to match the requested image (use .webp when available).
+                try {
+                    const pic = main.closest('picture');
+                    if (pic) {
+                        const srcEl = pic.querySelector('source');
+                        if (srcEl) {
+                            // prefer a .webp variant if available by replacing .png -> .webp
+                            let webp = src;
+                            if (webp.endsWith('.png')) webp = webp.replace(/\.png$/, '.webp');
+                            srcEl.srcset = webp;
+                        }
+                    }
+                } catch (e) {}
+                main.src = src;
+            }
+
+            // Ensure we get the thumbnail element even if a child (img) was clicked
+            let thumbEl = thumb;
+            try { if (thumb && typeof thumb.closest === 'function') thumbEl = thumb.closest('.product-thumb') || thumb; } catch(e) {}
+
+            document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+            if (thumbEl && thumbEl.classList) thumbEl.classList.add('active');
+
+            // Pixel: thumbnail viewed — send product-level content id(s)
+            try {
+                safeFbq('track', 'ViewContent', { content_name: 'B.K.D Tee', content_ids: Object.values(VARIANT_MAP), content_type: 'product' });
+            } catch (e) {}
+        }
+
+        function initThumbnailListeners() {
+            const thumbs = document.querySelectorAll('.product-thumb');
+            if (!thumbs || !thumbs.length) return;
+
+            thumbs.forEach(t => {
+                if (t.dataset.thumbInitialized) return;
+                const img = t.querySelector('img');
+                if (!img) return;
+                const src = img.getAttribute('src');
+                t.style.cursor = 'pointer';
+                t.addEventListener('click', (e) => {
+                    // ensure we pass the relative src (as used elsewhere)
+                    const useSrc = src || img.src;
+                    setMainImage(useSrc, e.target);
+                });
+                t.dataset.thumbInitialized = '1';
+            });
+        }
+
+        // --- Shopify cart wiring ---
+        // Use the same Shopify store domain used elsewhere in the workspace
+        const SHOPIFY_DOMAIN = 'https://shop.impact-threads.com';
+
+        // Variant IDs by size (size / color: Black)
+        const VARIANT_MAP = {
+            'S': '53042565579116',
+            'M': '53042565611884',
+            'L': '53042565644652'
+        };
+
+        // --- Meta Pixel bootstrap + safe queue ---
+        (function () {
+            const PIXEL_ID = "2925018871025865";
+
+            // If fbq already exists, do nothing.
+            if (window.fbq && typeof window.fbq === "function") return;
+
+            // Bootstrap stub (this is REQUIRED before loading fbevents.js)
+            (function (f, b, e, v, n, t, s) {
+                if (f.fbq) return;
+                n = f.fbq = function () {
+                    n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+                };
+                if (!f._fbq) f._fbq = n;
+                n.push = n;
+                n.loaded = true;
+                n.version = "2.0";
+                n.queue = n.queue || [];
+                t = b.createElement(e);
+                t.async = true;
+                t.src = v;
+                s = b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t, s);
+            })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+
+            // Init + immediate PageView (won’t throw because fbq stub exists)
+            window.fbq("init", PIXEL_ID);
+            window.fbq("track", "PageView");
+        })();
+
+        // Keep your existing safeFbq usage, but ensure it never calls undefined fbq.
+        window._fbqQueue = window._fbqQueue || [];
+        window.safeFbq = function () {
+            try {
+                if (window.fbq && typeof window.fbq === "function") {
+                    window.fbq.apply(null, arguments);
+                } else {
+                    window._fbqQueue.push(arguments);
+                }
+            } catch (e) {
+                window._fbqQueue.push(arguments);
+            }
+        };
+
+        // Flush queued events once fbq is actually ready
+        (function flushFbqQueue() {
+            if (!(window.fbq && typeof window.fbq === "function")) {
+                return setTimeout(flushFbqQueue, 50);
+            }
+            try {
+                const q = window._fbqQueue || [];
+                while (q.length) window.fbq.apply(null, q.shift());
+            } catch (e) {}
+        })();
+
+        const addBtn = document.getElementById('addToCart');
+        const buyBtn = document.getElementById('buyNow');
+        function updateCartButton() {
+            const size = document.getElementById('sizeSelect').value;
+            const hasVariant = VARIANT_MAP[size];
+
+            if (!size) {
+                addBtn.disabled = true;
+                buyBtn.disabled = true;
+                addBtn.textContent = 'SELECT A SIZE';
+                return;
+            }
+
+            if (hasVariant) {
+                addBtn.disabled = false;
+                buyBtn.disabled = false;
+                addBtn.textContent = 'ADD TO CART';
+                // Pixel: variant selected — send ViewContent with the selected variant id
+                try { safeFbq('track', 'ViewContent', { content_name: 'B.K.D Tee', content_ids: [hasVariant], content_type: 'product' }); } catch(e){}
+            } else {
+                // Size selected but no mapped variant — disable purchase actions
+                addBtn.disabled = true;
+                buyBtn.disabled = true;
+                addBtn.textContent = 'SIZE NOT AVAILABLE';
+            }
+        }
+
+        function buildCartUrl(variantId, checkout) {
+            const base = SHOPIFY_DOMAIN.replace(/\/$/, '');
+            return checkout
+                ? `${base}/cart/${variantId}:1?checkout`
+                : `${base}/cart/${variantId}:1`;
+        }
+
+        function handleAddToCartClick(e) {
+            const size = document.getElementById('sizeSelect').value;
+            const variantId = VARIANT_MAP[size];
+            if (!variantId) {
+                alert('Selected size is not available for purchase.');
+                return;
+            }
+            // Pixel: AddToCart
+            try { safeFbq('track', 'AddToCart', { content_name: 'B.K.D Tee', content_ids: [variantId], value: 18.88, currency: 'USD' }); } catch(e){}
+            // Redirect to Shopify cart for this variant (1 qty)
+            window.location.href = buildCartUrl(variantId, false);
+        }
+
+        function handleBuyNowClick(e) {
+            const size = document.getElementById('sizeSelect').value;
+            const variantId = VARIANT_MAP[size];
+            if (!variantId) {
+                alert('Selected size is not available for purchase.');
+                return;
+            }
+            // Pixel: InitiateCheckout
+            try { safeFbq('track', 'InitiateCheckout', { content_name: 'B.K.D Tee', content_ids: [variantId], value: 18.88, currency: 'USD' }); } catch(e){}
+            // Redirect to cart and open checkout
+            window.location.href = buildCartUrl(variantId, true);
+        }
+
+        function viewCart() {
+            try { safeFbq('track', 'ViewCart', { content_name: 'B.K.D Tee' }); } catch(e){}
+            const cartUrl = SHOPIFY_DOMAIN.replace(/\/$/, '') + '/cart';
+            window.location.href = cartUrl;
+        }
+
+        // Attach handlers (no automatic actions on load)
+        addBtn.addEventListener('click', handleAddToCartClick);
+        buyBtn.addEventListener('click', handleBuyNowClick);
+
+        // Nav scroll
+        const links = document.querySelectorAll('.nav-pill a');
+        const sects = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let cur = 'home';
+            sects.forEach(s => { if(scrollY >= s.offsetTop - 200) cur = s.id; });
+            links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
+            });
+        });
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            floatPositions[1].x = window.innerWidth - 90;
+            floatPositions[3].x = window.innerWidth - 100;
+            floatPositions[2].y = window.innerHeight - 180;
+            floatPositions[3].y = window.innerHeight - 250;
+            // Re-normalize to keep floaters visible and reposition elements
+            try { normalizeFloatPositions(); } catch (e) {}
+            floaters.forEach((f, i) => {
+                f.style.left = floatPositions[i].x + 'px';
+                f.style.top = floatPositions[i].y + 'px';
+            });
+        });
+        // Ensure the pixel is injected on page load so Meta's detection tools
+        // (and Test Events) can see the pixel even if other tracking is deferred.
+        try { document.addEventListener('DOMContentLoaded', loadFbqOnce); } catch (e) {}
+    </script>
+    <!-- Meta Pixel: loading deferred until user interaction via `safeFbq` -->
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=2925018871025865&ev=PageView&noscript=1"
+    /></noscript>
+</body>
+</html>
