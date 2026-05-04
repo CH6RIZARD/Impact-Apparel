@@ -1,5 +1,5 @@
 # Impact Apparel
-
+https://impact-threads.com/
 Streetwear where the pattern is the argument.
 
 Fabric ties back to Nigerian military and MEND camo. Not cosplay, allegiance to a specific history of resistance when the Delta was being extracted in real time. Oil made billions there and left poverty. The pattern belonged to people who fought back when survival got pulled out of the ground with the crude. Wearing it is protest you can see from across the street.
